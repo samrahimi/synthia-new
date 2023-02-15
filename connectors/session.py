@@ -2,7 +2,7 @@ from replit import db
 import connectors.utils as dbutil
 
 from connectors.gpt import GPT
-from connectors.models import models
+from connectors.models import load_models
 from uuid import uuid1
 import json
 
@@ -15,7 +15,7 @@ from connectors.settings import DEFAULT_USER_NAME, DEFAULT_AI_NAME, headers, sum
 #load sessions
 #sessions =  dbutil.get_or_create("active_sessions", table_name="app_state", default_value=dict(by_id={}, by_user={}))
 sessions = dict(by_id={}, by_user={})
-
+models = load_models()
 #for summarization we need max quality in a condensed token space so we use n=3 (gets the gpt to do it 3 times and return the best)
 
 #truncation defaults... users will want to override these because they will depend on the
@@ -121,7 +121,7 @@ class Session:
     #todo: we should implement a classifier and pick out whatever in the convo should be added to the model's training examples, instead of being session context.
     return summary
 
-  def get_state(self):
+  def get_state(self, include_conversation=False):
     #print(self.ai_name)
     return get_prompt_state(
       model=self.model_id,
@@ -147,7 +147,7 @@ class Session:
       #once enough older messages have been removed to bring the length down below threshold
       #we summarize them, and that summary becomes part of the session context for future prompts
       #essentially, we have used a separate instance of GPT to judge what was important enough
-      #to remember, and what is TLDR bullshit... and then replaced the messages with a memory
+      #to remember, and what is TLDR bullshit... and then we have created a memory of the key points each time we have to truncate original material from the prompt. here's hoping  GPT4 has a longer context window because 4000 tokens is tight
       if (new_token_count <= TRUNCATE_UNTIL_UNDER
           or len(self.conversation) == 0):
         self.summarize_to_context(truncated_convo)

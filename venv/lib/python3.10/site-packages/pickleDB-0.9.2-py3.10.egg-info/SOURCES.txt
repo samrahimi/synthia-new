@@ -1,0 +1,6 @@
+pickledb.py
+setup.py
+pickleDB.egg-info/PKG-INFO
+pickleDB.egg-info/SOURCES.txt
+pickleDB.egg-info/dependency_links.txt
+pickleDB.egg-info/top_level.txt

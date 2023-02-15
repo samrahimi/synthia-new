@@ -25,11 +25,3 @@ def create_session():
 app.run(host='0.0.0.0', port=8080)
 '''
 
-sesh = Session(model_id="super_gpt",
-               user_id="sammy",
-               user_name="Sam",
-               ai_name="Super G")
-while True:
-  query = input(">>>>>")
-  response = sesh.ask_gpt(query)
-  print("Super G says: " + response)

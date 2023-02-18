@@ -1,13 +1,10 @@
-from replit import db
 import connectors.utils as dbutil
 
 from connectors.gpt import GPT
-from connectors.models import load_models
 from uuid import uuid1
 import json
 
 
-API_KEY = db["api_key"]
 #don't say anything, i know. its my party and i'll cry if i want to
 
 from connectors.settings import DEFAULT_USER_NAME, DEFAULT_AI_NAME, headers, summarization_model, summarization_settings, TRUNCATE_IF_OVER, TRUNCATE_UNTIL_UNDER
@@ -15,7 +12,7 @@ from connectors.settings import DEFAULT_USER_NAME, DEFAULT_AI_NAME, headers, sum
 #load sessions
 #sessions =  dbutil.get_or_create("active_sessions", table_name="app_state", default_value=dict(by_id={}, by_user={}))
 sessions = dict(by_id={}, by_user={})
-models = load_models()
+from connectors.models import get_model
 #for summarization we need max quality in a condensed token space so we use n=3 (gets the gpt to do it 3 times and return the best)
 
 #truncation defaults... users will want to override these because they will depend on the
@@ -30,7 +27,7 @@ def get_prompt_state(model="cofounder",
                      ainame=DEFAULT_AI_NAME,
                      context=None,
                      conversation=[]):
-  data = models[model]
+  data = get_model(model)
   prompt = data["invocation"]
   if (data["training_examples"] is not None):
     prompt += headers["examples"] + data["training_examples"]
@@ -53,7 +50,7 @@ class Session:
     returns a snapshot of the session, suitable for saving to a db or sending over the network
     use return_as="str" and get a string of json back, otherwise you get a simple dict
     '''
-    serializable_session=dict(SESSION_ID=self.SESSION_ID, model_id=self.model_id, user_name=self.user_name, ai_name=self.ai_name, conversation=self.conversation, context= self.context, settings=self.settings, prompt_state = self.get_state())
+    serializable_session=dict(SESSION_ID=self.SESSION_ID, user_id=self.user_id, model_id=self.model_id, user_name=self.user_name, ai_name=self.ai_name, conversation=self.conversation, context= self.context, settings=self.settings, prompt_state = self.get_state())
     if return_as == "dict":
       return serializable_session
     else:
@@ -61,7 +58,7 @@ class Session:
       
   def unstringify(saved_session):
     '''use this to instantiate a Session that reflects a session in progress'''
-    session_obj = Session(model_id=saved_session.model_id, user_name=saved_session.user_name, ai_name=saved_session.ai_name)
+    session_obj = Session(user_id=saved_session.user_id,model_id=saved_session.model_id, user_name=saved_session.user_name, ai_name=saved_session.ai_name)
     #the Session constructor assumes its a new session, but no worries, we'll just
     #stomp all over the object's instance variables because we can and we need to release this thing
     session_obj.SESSION_ID = saved_session.SESSION_ID
@@ -80,7 +77,7 @@ class Session:
                  
     self.SESSION_ID = uuid1()
     self.model_id = model_id
-    self.model = models[model_id]
+    self.model = get_model(model_id)
     self.user_id = user_id
     self.user_name = user_name
     self.ai_name = ai_name
@@ -128,6 +125,7 @@ class Session:
       username=self.user_name,
       ainame=self.ai_name,
       context=self.context,
+      conversation = self.conversation if include_conversation else []
     )
 
   def count_tokens(self):

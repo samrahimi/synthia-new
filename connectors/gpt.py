@@ -16,7 +16,7 @@ class GPT:
     return num_tokens
 
   def __init__(self,
-               api_key=db["api_key"],
+               api_key="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",
                model="text-davinci-003",
                prefix="",
                settings=None):
@@ -54,7 +54,7 @@ class GPT:
 class ChatGPT:
 
   def __init__(self,
-               api_key=db["api_key"],
+               api_key='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',
                model="text-davinci-003",
                bootstrap="",
                memories="",

@@ -46,3 +46,40 @@ def get_or_create(item_key, table_name="", default_value=None):
     db.set(k, default_value)
   
   return db.get(k) # sanity check to make sure the item was 
+
+
+import json
+
+def load_json(filename):
+  with open(filename) as file:
+    data = json.load(file)
+  return json.loads(data)
+
+def save_json(object,  filename):
+  data = json.dumps(object)
+  with open(filename, 'w') as outfile: 
+    json.dump(data, outfile)
+
+'''turn a dictionary into a normal object'''
+def dict_to_object(d):
+    if isinstance(d, list):
+        d = [dict_to_object(x) for x in d]
+    if not isinstance(d, dict):
+        return d
+    class C(object):
+        pass
+    o = C()
+    for k in d:
+        o.__dict__[k] = dict_to_object(d[k])
+    return o
+
+
+'''deep copy of an object'''
+
+
+def deep_copy(obj):
+    if isinstance(obj, list):
+        return [deep_copy(x) for x in obj]
+    if isinstance(obj, dict):
+        return {k: deep_copy(obj[k]) for k in obj.keys()}
+    return obj

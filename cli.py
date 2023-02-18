@@ -16,12 +16,14 @@ def join_session():
   user_sessions = current_user["active_sessions"]
   print("Existing Sessions:")
   for i in range(len(user_sessions)):
-    print(f'{i}) {current_user["active_sessions"][i].model_id}')
+    print(f'{i}) {user_sessions[i].model_id}')
 
   s = input("Pick a session, or hit enter to create a new session")
   if len(s) > 0:
     selected_session = user_sessions[int(s)]
   else:
+    from connectors.models import list_models
+    print("Available models: ", list_models())
     model = input("model id: ")
     displayname = input("your name (or leave blank for default):")
     ainame = input("bot's name (or leave blank for default):")
@@ -44,6 +46,6 @@ while True:
   if (query == "/menu"):
     sesh = join_session()
   elif (query == "/state"):
-    print(sesh.get_state())
+    print(sesh.get_state(include_conversation=True))
   else:
     print(sesh.ai_name + " says:" + sesh.ask_gpt(query))

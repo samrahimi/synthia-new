@@ -45,6 +45,17 @@ def get_prompt_state(model="cofounder",
 
 
 class Session:
+  def refresh_all(user_id):
+    saved_state = filter(lambda x: x["user_id"] == user_id, dbutil.select_all("active_sessions", get_values=True))
+    user_sessions = [Session.unstringify(s) for s in saved_state]
+    return user_sessions
+  
+  def save_all(user_id):
+    for s in sessions["by_user"][user_id]:
+      s.save()
+    print("saved session state for user "+user_id)
+    return True
+
   def stringify(self, return_as="dict"):
     '''
     returns a snapshot of the session, suitable for saving to a db or sending over the network
@@ -58,44 +69,112 @@ class Session:
       
   def unstringify(saved_session):
     '''use this to instantiate a Session that reflects a session in progress'''
-    session_obj = Session(user_id=saved_session.user_id,model_id=saved_session.model_id, user_name=saved_session.user_name, ai_name=saved_session.ai_name)
-    #the Session constructor assumes its a new session, but no worries, we'll just
-    #stomp all over the object's instance variables because we can and we need to release this thing
-    session_obj.SESSION_ID = saved_session.SESSION_ID
-    session_obj.conversation = saved_session.conversation
-    session_obj.context = saved_session.context
-    return session_obj
-    
+    session_obj = Session(user_id=saved_session.user_id,
+    model_id=saved_session.model_id, 
+    user_name=saved_session.user_name, 
+    ai_name=saved_session.ai_name, is_existing=True, 
+    set_session_id=saved_session.SESSION_ID, 
+    set_context = saved_session.context, 
+    set_convo = saved_session.conversation)
 
-    
+    #note that if you don't set is_existing, there's no need for the params that follow, the session initializes to empty 
+    #defaults and a fresh sessionid... but if you're loading from a DB, you want those values to reflect the state that was saved
+    #and is_existing flag tells the constructor to look at these values (it could have been built without that flag but i'm lazy)
+    return session_obj
+  
+  #serializes the current instance using the custom serialization function stringify
+  #and saves to the DB, inserting if never saved before or updating if already in the DB
+  #the DB utility expects to receive dicts, lists, and primitive values, and internally performs JSON (de)serialization when 
+  #persisting or retrieving data, so there's no need to return_as json and deal with that shit ourselves
+  #does stringify / unstringify work properly? not sure because i moved fast, broke things, and left everything publicly mutable 
+  #in my classes, and with no type checking enforced... it let me get this thing done quick, but this will need to change for the 1.0
+  #release. However tonight is "get the mvp online come hell or high water" night, as in, the hard part's done, it mostly works
+  #and a simple UI can be thrown together and attached by way of REST API in the next 4 hours or so... good thing because we are OUT 
+  #of money... I bootstrapped this and I've been eating tuna from a can the past 3 days! But as Mr. Kinsella always said in that movie
+  #and I've always believed about game-changing apps, "if you build it they will come" - the users, and therefore the investors
+  #or maybe even just paying customers from day one. May the force be with Synthia Labs...
+  def save(self):
+    dbutil.upsert(self.SESSION_ID, "active_sessions", self.stringify(return_as="dict"))
+    print("debug: session "+self.SESSION_ID+" saved to database (active_sessions)")
+    print("json dump below")
+    print(self.stringify(return_as="str"))
+
+
+  def load(sessionid):
+    saved_session= dbutil.get_item(sessionid, "active_sessions")
+    if (saved_session):
+      print("got saved session, will deserialize. Session ID: "+sessionid)
+      print("json dump:")
+      print(saved_session) #should be a simple dict
+
+      #basically this just calls the constructor of Session and sets a few properties using the info in the DB copy
+      #which has all the data, without the code... using session_id_override lets you manually set session ID instead of 
+      #getting a randomly created one on object creation. which then lets you, say, update stale copies of the session in memory
+      #instead of creating duplicates. There's something wrong with the architecture but that can be fixed for 1.0
+      return Session.unstringify(saved_session)
+    else:
+      print("error, session not found with id "+ sessionid+" - did you remember to save?")
+      return False
+
+
   def __init__(self,
                model_id='',
                user_id='',
                user_name="User",
-               ai_name="GPT"):
+               ai_name="GPT",
+               is_existing = False,
+               set_session_id=0,
+               set_convo=[],
+               set_context=""):
     print(ai_name)
                  
-    self.SESSION_ID = uuid1()
+    self.SESSION_ID = uuid1() if not is_existing else set_session_id
     self.model_id = model_id
     self.model = get_model(model_id)
     self.user_id = user_id
     self.user_name = user_name
     self.ai_name = ai_name
-    self.conversation = []
+    self.conversation = [] if not is_existing else set_convo
     self.settings = self.model["openai_settings"]
-    self.context = self.model["default_session_context"] or ""
+    if not is_existing: 
+      self.context = self.model["default_session_context"] or ""
+    else:
+      self.context = set_context or ""
+
     #this is the simplified gpt class, that does not know about users, sessions, or conversations
     #it just does prompts and completions
     self.gpt = GPT(model=self.model["openai_settings"]["model"],
                    settings=self.settings)
 
     #insert into the dictionary of sessions and, if a user_id was specified, into the sessions by user dictionary. This is all gonna go away when the database logic is implemented...
-    sessions["by_id"][self.SESSION_ID] = self
-    if (user_id != ''):
+    
+    sessions["by_id"][self.SESSION_ID] = self #its a dict key so we can just update the value no problem
+    if not is_existing:
+
+      #if user has no sessions, create an empty list to hold them
       if not user_id in sessions["by_user"]:
         sessions["by_user"][user_id] = []
+
+      #then add the current session to the list, magically updating all references to this list such as the user["sessions"]...
       sessions["by_user"][user_id].append(self)
 
+    if is_existing:
+      #check if its already in memory
+      if user_id in sessions["by_user"]:
+        existing_sesh = len([s for s in sessions["by_user"][user_id] if s.SESSION_ID == self.SESSION_ID]) > 0
+        if existing_sesh:
+          #do nothing... updating the main sessions dict should also update the reference here
+          print("found in memory copy of session "+self.SESSION_ID+" attached to user, updated main sessions dict")
+      else:
+        if not user_id in sessions["by_user"]:
+          sessions["by_user"][user_id] = []
+
+        sessions["by_user"][user_id].append(self)
+        print("added session "+self.SESSION_ID+" to user sessions")
+
+
+    else:
+      print("session restored from db, pls add to in memory session dicts after setting SESSION_ID")
   def summarize_to_context(self, truncated_conversation):
     #this is some tricky, inelegant logic.
     #we want gpt to summarize in the context of its finetuning and previous context
@@ -112,9 +191,10 @@ class Session:
     print("Summarization job completed. \nConversation tokens removed: " +
           str(GPT.count_tokens_in_prompt("\n\n".join(truncated_conversation))) +
           "\nSummary tokens created: " + str(GPT.count_tokens_in_prompt(summary)))
-
+    from datetime import datetime
+    date_string = datetime.now().strftime("%d %B %Y")
     #append the summarized convo to the context (the session-level long term memory of the bot)
-    self.context += "\n\n" + summary
+    self.context += "\n\n*** Memory added at " + date_string+ " ***\n" + summary
     #todo: we should implement a classifier and pick out whatever in the convo should be added to the model's training examples, instead of being session context.
     return summary
 

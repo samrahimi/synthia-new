@@ -3,7 +3,7 @@
 #as we optimize the architecture, interacting with the models will use less credits!
 TRIAL_CREDITS_ON_SIGNUP = 100000
 LOGGED_IN_USERS = {}
-
+from connectors.session import Session, sessions
 initial_users = {
   "admin": {
     "user_id": "admin",
@@ -31,9 +31,12 @@ def add_initial_users():
   dbutils.upsert("sammy", "users", initial_users["sammy"])
 
 
-def get_user(user_id):
-  return dbutils.get_item(user_id, "users")
-
+def get_user(user_id, include_sessions=False):
+  user= dbutils.get_item(user_id, "users")
+  if (include_sessions):
+    user["active_sessions"] = Session.refresh_all(user_id)
+  user["is_logged_in"] = is_logged_in(user_id)
+  return user
 
 def signup(user_id="",
            name="",
@@ -47,7 +50,9 @@ def signup(user_id="",
   if (get_user(user_id)):
     return False
   else:
-    return dbutils.upsert(user_id, "users", user_info)
+    dbutils.upsert(user_id, "users", user_info)
+    return login(user_id=user_id, password = password)
+
 
 
 def is_logged_in(user_id):
@@ -67,7 +72,8 @@ def login(user_id, password):
   if not user or (user["password"] != password):
     return False
   else:
-    from connectors.session import Session, sessions
+    
+    Session.refresh_all(user_id) #deserializes the user's saved sessions and attaches to sessions["by_user"] in memory if they exist
     if user_id not in sessions["by_user"]:
       starter_session = Session(model_id='super_gpt',
                                 user_id=user_id,
@@ -77,6 +83,19 @@ def login(user_id, password):
 
     #Sessions automatically get added to the sessions["by_user"] dict when the constructor is called, so we can now simply compose a user object that's actually userful and send it back to whoever feels like stringifying the sessions list...
     user["active_sessions"] = sessions["by_user"][user_id]
-    print(user["active_sessions"][0].SESSION_ID)
+    print("login complete. "+str(len(user["active_sessions"]))+" sessions loaded")
     LOGGED_IN_USERS[user_id] = user
-    return LOGGED_IN_USERS[user_id] 
+    return LOGGED_IN_USERS[user_id]
+
+def save_state(user_id):
+  return Session.save_all(user_id)
+def load_state(user_id):
+  return Session.refresh_all(user_id)
+  #use this if you want sessions for a user other than the logged in user
+def serialize_user(user):
+  cloned_user = dbutils.deep_copy(user)
+  cloned_user["active_sessions"]= [s.stringify() for s in cloned_user["active sessions"]]
+  #if we did this right, the result is a user as a straight up dict, with their info and their sessions as plain json-like data
+  #and if deep_copy did its thing, the result of this call can be modified without mutating the user stored in LOGGED_IN_USERS or the sessions it references
+  #deep_copy was written by gpt and is rather opaque so let's see...
+  return cloned_user

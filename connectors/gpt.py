@@ -7,16 +7,13 @@ class GPT:
   def count_tokens_in_prompt(string: str,
                              encoding_name: str = "p50k_base") -> int:
     """Returns the number of tokens in a text string. Note that the default encoding_name applies to davinci-3, davinci-2, chatgpt (a davinci-2 knockoff), and any of the code models. Older GPT3 variants like instruct or davinci 1, or any of the free GPTs like j6b, neo, should use gpt2 as the encoding_name"""
-    print(
-      "Starting the token count... if this takes forever, just short circuit this with a simple word count, divide by 2, and say fuck it in the name of being agile"
-    )
     encoding = tiktoken.get_encoding(encoding_name)
     num_tokens = len(encoding.encode(string))
     print("Token count complete, value: " + str(num_tokens))
     return num_tokens
 
   def __init__(self,
-               api_key="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",
+               api_key="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",
                model="text-davinci-003",
                prefix="",
                settings=None):
@@ -54,7 +51,7 @@ class GPT:
 class ChatGPT:
 
   def __init__(self,
-               api_key='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',
+               api_key='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',
                model="text-davinci-003",
                bootstrap="",
                memories="",

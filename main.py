@@ -73,26 +73,28 @@ def create_session():
   print("new session for "+req["user_id"])
   
   session= sessions.Session(model_id=req["model_id"], user_id=req["user_id"], user_name=req["user_name"], ai_name=req["ai_name"], is_existing= False)
-  session.save()
-  #note: the Session constructor will update the in-memory sessions collections that are referenced by the User object
-  #so the new session will appear in the user's sessions (we fucking hope so, anyways)
 
+  #the session has autosaved upon creation, so loading the relevant user will also load the new session
+  #its ineffecient but right now its more sane than trying to synchronize in-memory dicts with persistant storage
   return users.serialize_user(users.get_user(user_id=req["user_id"], include_sessions=True)) #to see if it works, and to allow the client side to just refresh the list instead of having to append
 
-@app.route("/users/<user_id>/save_state", methods=["GET"])
-def save_state(user_id):
-  return users.save_state(user_id) if users.is_logged_in(user_id) else {"error": "this only works for logged in users"}
+# unnecessary: session state is autosaved when anything changes, and refreshed when you load a user
+# @app.route("/users/<user_id>/save_state", methods=["GET"])
+# def save_state(user_id):
+#   return users.save_state(user_id) if users.is_logged_in(user_id) else {"error": "this only works for logged in users"}
 
 @app.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
   if (users.is_logged_in(user_id=user_id)):
     return users.serialize_user(users.get_logged_in_user(user_id = user_id))
   else:
-    return users.serialize_user(users.get_user(user_id = user_id, include_sessions = True))
+    u= users.get_user(user_id, include_sessions=True)
+    if u:
+      return users.serialize_user(u)
 
 @app.route("/sessions/<session_id>/query/<message_to_gpt>", methods=["GET"])
 def perform_inference(session_id, message_to_gpt):
-  the_session: sessions.Session = sessions.sessions["by_id"][session_id]
+  the_session: sessions.Session = sessions.Session.load(session_id) #sessions.sessions["by_id"][session_id]
   response = the_session.ask_gpt(message = message_to_gpt)
   return {"response": response} if response else "error"
 

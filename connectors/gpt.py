@@ -1,6 +1,6 @@
 import openai
 import tiktoken
-from replit import db
+from credentials import secrets
 
 class GPT:
 
@@ -13,7 +13,7 @@ class GPT:
     return num_tokens
 
   def __init__(self,
-               api_key="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",
+               api_key=secrets["openai_key"],
                model="text-davinci-003",
                prefix="",
                settings=None):
@@ -51,7 +51,7 @@ class GPT:
 class ChatGPT:
 
   def __init__(self,
-               api_key='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',
+               api_key=secrets["openai_key"],
                model="text-davinci-003",
                bootstrap="",
                memories="",

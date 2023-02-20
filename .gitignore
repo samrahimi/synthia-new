@@ -2,3 +2,4 @@ nsfw_models.json
 venv
 venv/*
 __pycache__
+credentials.py

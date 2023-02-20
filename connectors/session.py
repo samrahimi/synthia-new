@@ -45,9 +45,9 @@ def get_prompt_state(model="cofounder",
 
 
 class Session:
-  def refresh_all(user_id):
-    saved_state = filter(lambda x: x["user_id"] == user_id, dbutil.select_all("active_sessions", get_values=True))
-    user_sessions = [Session.unstringify(s) for s in saved_state]
+  def load_all(user_id=""):
+    saved_state = dbutil.select("active_sessions", {"user_id": user_id})
+    user_sessions = [Session.unstringify(s) for s in saved_state] if len(saved_state)> 0 else []
     return user_sessions
   
   def save_all(user_id):
@@ -55,6 +55,13 @@ class Session:
       s.save()
     print("saved session state for user "+user_id)
     return True
+
+  def save_all_no_bullshit(user):
+    for s in user["active_sessions"]:
+      s.save()
+    print("saved session state for user "+user["user_id"])
+    return True
+
 
   def stringify(self, return_as="dict"):
     '''
@@ -67,9 +74,9 @@ class Session:
     else:
       return json.dumps(serializable_session)
       
-  def unstringify(saved_session):
+  def unstringify(s):
     '''use this to instantiate a Session that reflects a session in progress'''
-    saved_session = dbutil.dict_to_object(saved_session)
+    saved_session = dbutil.dict_to_object(s)
     session_obj = Session(user_id=saved_session.user_id,
     model_id=saved_session.model_id, 
     user_name=saved_session.user_name, 
@@ -96,13 +103,12 @@ class Session:
   #or maybe even just paying customers from day one. May the force be with Synthia Labs...
   def save(self):
     print(self.stringify())
-    dbutil.upsert(self.SESSION_ID, "active_sessions", self.stringify(return_as="dict"))
+    dbutil.upsert({"SESSION_ID": self.SESSION_ID}, "active_sessions", self.stringify(return_as="dict"))
     print("debug: session "+self.SESSION_ID+" saved to database (active_sessions)")
-    print("json dump below")
 
 
   def load(sessionid):
-    saved_session= dbutil.get_item(sessionid, "active_sessions")
+    saved_session= dbutil.get_item({"SESSION_ID": sessionid}, "active_sessions")
     if (saved_session):
       print("got saved session, will deserialize. Session ID: "+sessionid)
       print("json dump:")
@@ -150,32 +156,42 @@ class Session:
     #insert into the dictionary of sessions and, if a user_id was specified, into the sessions by user dictionary. This is all gonna go away when the database logic is implemented...
     
     sessions["by_id"][self.SESSION_ID] = self #its a dict key so we can just update the value no problem
+
+    # the sessions by user dict is causing massive headaches... its a nice performance boost but for now we'll just
+    # use the database as our single source of truth
+    # if this is a new session, we should save it to the db now
+    # if its a deserialization of a saved session, we don't need to save, as we just loaded it
     if not is_existing:
-
-      #if user has no sessions, create an empty list to hold them
-      if not user_id in sessions["by_user"]:
-        sessions["by_user"][user_id] = []
-
-      #then add the current session to the list, magically updating all references to this list such as the user["sessions"]...
-      sessions["by_user"][user_id].append(self)
-
-    if is_existing:
-      #check if its already in memory
-      if user_id in sessions["by_user"]:
-        existing_sesh = len([s for s in sessions["by_user"][user_id] if s.SESSION_ID == self.SESSION_ID]) > 0
-        if existing_sesh:
-          #do nothing... updating the main sessions dict should also update the reference here
-          print("found in memory copy of session "+self.SESSION_ID+" attached to user, updated main sessions dict")
-      else:
-        if not user_id in sessions["by_user"]:
-          sessions["by_user"][user_id] = []
-
-        sessions["by_user"][user_id].append(self)
-        print("added session "+self.SESSION_ID+" to user sessions")
-
-
+      self.save()
+      print("debug: new session created, saved to database")
     else:
-      print("session restored from db, pls add to in memory session dicts after setting SESSION_ID")
+      print("debug: successfully instantiated saved session")
+    # if not is_existing:
+
+    #   #if user has no sessions, create an empty list to hold them
+    #   if not user_id in sessions["by_user"]:
+    #     sessions["by_user"][user_id] = []
+
+    #   #then add the current session to the list, magically updating all references to this list such as the user["sessions"]...
+    #   sessions["by_user"][user_id].append(self)
+
+    # if is_existing:
+    #   #check if its already in memory
+    #   if user_id in sessions["by_user"]:
+    #     existing_sesh = len([s for s in sessions["by_user"][user_id] if s.SESSION_ID == self.SESSION_ID]) > 0
+    #     if existing_sesh:
+    #       #do nothing... updating the main sessions dict should also update the reference here
+    #       print("found in memory copy of session "+self.SESSION_ID+" attached to user, updated main sessions dict")
+    #   else:
+    #     if not user_id in sessions["by_user"]:
+    #       sessions["by_user"][user_id] = []
+
+    #     sessions["by_user"][user_id].append(self)
+    #     print("added session "+self.SESSION_ID+" to user sessions")
+
+
+    # else:
+    #   print("session restored from db, pls add to in memory session dicts after setting SESSION_ID")
   def summarize_to_context(self, truncated_conversation):
     #this is some tricky, inelegant logic.
     #we want gpt to summarize in the context of its finetuning and previous context
@@ -197,6 +213,7 @@ class Session:
     #append the summarized convo to the context (the session-level long term memory of the bot)
     self.context += "\n\n*** Memory added at " + date_string+ " ***\n" + summary
     #todo: we should implement a classifier and pick out whatever in the convo should be added to the model's training examples, instead of being session context.
+    self.save()
     return summary
 
   def get_state(self, include_conversation=False):
@@ -251,6 +268,6 @@ class Session:
         "debug: performing truncate and summarize to reduce total context length"
       )
       self.truncate_and_summarize()
-
+    self.save()
     return response
     #todo count tokens and summarize-to-memory if required

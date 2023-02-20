@@ -1,74 +1,88 @@
-#from replit import db
-#replit db is awful, mangling my dicts
-#that is why you centralize database logic in a module like this one
-# so you can just go
+# outgrew this piece of shit before i even launched
+# thank god i cerntralized the db logic early, it means that switching to a real db won't break the business logic
+# import pickledb
+# db: pickledb.PickleDB =pickledb.load("platform.db.json", False)
 
-import pickledb
-db: pickledb.PickleDB =pickledb.load("platform.db.json", False)
-#and with some very small changes the whole app is migrated over
+import json
+from bson.objectid import ObjectId
+import pymongo
+from credentials import secrets
+client = pymongo.MongoClient(
+    "mongodb+srv://Cluster84883:"+secrets["mongo_password"]+"@cluster84883.zxzjtqk.mongodb.net/?retryWrites=true&w=majority")
+db = client.synthia_core
 
-def pack_key(item_key, table_name=""):
-  '''and... this is why i don't like nosql databases, because you gotta do shit like this'''
-  full_key = f"{table_name}.{item_key}" if len(table_name) > 0 else item_key
-  return full_key
 
-
-def unpack_key(full_key: str):
-  if full_key.count(".") == 0:
-    return full_key
-  unpacked_key = full_key.split(".")
-  #i don't think we need to return the table name but its unpacked_key[0] if that changes
-  return unpacked_key[1]
+def select(table_name, query):
+    return list(db[table_name].find(query))
 
 
 def select_all(table_name, get_values=True):
-  if get_values:
-    return [db.get(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
-  else:
-    return [unpack_key(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
+    return list(db[table_name].find())
+    if get_values:
+        return [db.get(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
+    else:
+        return [unpack_key(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
 
 
 def get_item(item_key, table_name=""):
-  return db.get(pack_key(item_key, table_name=table_name))
+    if item_key is str:
+        item_key = {'_id': ObjectId(item_key)}
+    return db[table_name].find_one(item_key)
+
+    return db.get(pack_key(item_key, table_name=table_name))
 
 
 def upsert(item_key, table_name="", item_value=None):
-  k = pack_key(item_key, table_name=table_name)
-  result= db.set(k, item_value)
-  db.dump()
-  return result
-  #db.("platform.db.json")
+    if item_key is str:
+        item_key = {'_id': ObjectId(item_key)}
+    return db[table_name].update_one(item_key, {'$set': item_value}, upsert=True)
 
-
-#let's get some structure around this damn replit db
-#otherwise every module will be full of x = db["x"] or x_default
-def get_or_create(item_key, table_name="", default_value=None):
-  k = pack_key(item_key, table_name=table_name)
-  if not db.get(k):
-    db.set(k, default_value)
+    result = db.set(k, item_value)
     db.dump()
+    return result
+    # db.("platform.db.json")
 
-  return db.get(k) # sanity check to make sure the item was 
 
+# let's get some structure around this damn replit db
+# otherwise every module will be full of x = db["x"] or x_default
+def get_or_create(item_key, table_name="", default_value=None):
+    if item_key is str:
+        item_key = {'_id': ObjectId(item_key)}
 
-import json
+    if (db[table_name].count_documents(item_key) == 0):
+        db[table_name].insert_one(default_value)
+
+    return db[table_name].find_one(item_key)
+
+    k = pack_key(item_key, table_name=table_name)
+    if not db.get(k):
+        db.set(k, default_value)
+        db.dump()
+
+    return db.get(k)  # sanity check to make sure the item was
+
 
 def load_json(filename):
-  with open(filename) as file:
-    data = json.load(file)
-  return json.loads(data)
+    with open(filename) as file:
+        data = json.load(file)
+    return json.loads(data)
+
 
 def save_json(object,  filename):
-  data = json.dumps(object)
-  with open(filename, 'w') as outfile: 
-    json.dump(data, outfile)
+    data = json.dumps(object)
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile)
+
 
 '''turn a dictionary into a normal object'''
+
+
 def dict_to_object(d):
     if isinstance(d, list):
         d = [dict_to_object(x) for x in d]
     if not isinstance(d, dict):
         return d
+
     class C(object):
         pass
     o = C()

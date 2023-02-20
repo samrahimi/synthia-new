@@ -27,18 +27,17 @@ import connectors.utils as dbutils
 
 
 def add_initial_users():
-  dbutils.upsert("admin", "users", initial_users["admin"])
-  dbutils.upsert("sammy", "users", initial_users["sammy"])
-
+  dbutils.upsert({"user_id":"admin"}, "users", initial_users["admin"])
+  dbutils.upsert({"user_id":"sammy"}, "users", initial_users["sammy"])
 
 def get_user(user_id, include_sessions=False):
-  user= dbutils.get_item(user_id, "users")
-  if user == False:
+  user= dbutils.get_item({"user_id":user_id}, "users")
+  if user == None:
     return False
 
 
   if (include_sessions):
-    user["active_sessions"] = Session.refresh_all(user_id)
+    user["active_sessions"] = Session.load_all(user_id)
   user["is_logged_in"] = is_logged_in(user_id)
   return user
 
@@ -52,7 +51,7 @@ def signup(user_id="",
   user_info = {"user_id": user_id, "name": name, "access_level": access_level, "email": email, "password": password, "credits": credits, "extended_profile": kwargs}
   print(user_info)
   if (get_user(user_id) == False):
-    dbutils.upsert(user_id, "users", user_info)
+    dbutils.upsert({"user_id":user_id}, "users", user_info)
     return login(user_id=user_id, password = password, first_time=True)
     print("user created")
   else:
@@ -78,9 +77,7 @@ def login(user_id, password, first_time=False):
   if not user or (user["password"] != password):
     return False
   else:
-    if not first_time:
-      user_sessions = load_state(user_id) #deserializes the user's saved sessions and attaches to sessions["by_user"] in memory if they exist
-    else:
+    if first_time:
       starter_session = Session(model_id='super_gpt',
                                 user_id=user_id,
                                 user_name=user["name"],
@@ -88,21 +85,30 @@ def login(user_id, password, first_time=False):
       starter_session.context += "\n\nNOTE: %USER_NAME% just signed up for Synthia, so Please give him the appropriate congratulations when you reply to their first message!\n\n"
       starter_session.save()
 
+    user_sessions = load_state(user_id) 
     #Sessions automatically get added to the sessions["by_user"] dict when the constructor is called, so we can now simply compose a user object that's actually userful and send it back to whoever feels like stringifying the sessions list...
-    user["active_sessions"] = sessions["by_user"][user_id]
+    user["active_sessions"] = user_sessions
     print("login complete. "+str(len(user["active_sessions"]))+" sessions loaded")
     LOGGED_IN_USERS[user_id] = user
     return LOGGED_IN_USERS[user_id]
 
-def save_state(user_id):
-  return Session.save_all(user_id)
+#don't call this unless you have a live user object... 
+#otherwise if you load a user with get_user just to do this you'll nuke the in memory sessions and replace with
+#the previously saved version, which you will then resave. 
+#like a goddamn circle jerk, or that moron in ancient greece who was sentenced to push a rock uphill for all eternity
+def save_state(user):
+  return Session.save_all_no_bullshit(user)
+
 def load_state(user_id):
-  return Session.refresh_all(user_id)
+  return Session.load_all(user_id)
   #use this if you want sessions for a user other than the logged in user
 def serialize_user(user):
   cloned_user = dbutils.deep_copy(user)
-  cloned_user["active_sessions"]= [s.stringify() for s in cloned_user["active_sessions"]]
-  #if we did this right, the result is a user as a straight up dict, with their info and their sessions as plain json-like data
-  #and if deep_copy did its thing, the result of this call can be modified without mutating the user stored in LOGGED_IN_USERS or the sessions it references
-  #deep_copy was written by gpt and is rather opaque so let's see...
+  del cloned_user["active_sessions"] #they don't clone right
+  del cloned_user["_id"] #that ObjectID shit from mongo doesn't serialize well so we use our own index columns
+  sessions=[]
+  for s in user["active_sessions"]:
+    sessions.append(s.stringify())
+  cloned_user["active_sessions"]= sessions #the serialized session list
+  #if we did this right, the result is a user as a straight up dict, with userinfo and a list of sessions...
   return cloned_user

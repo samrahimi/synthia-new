@@ -69,6 +69,7 @@ class Session:
       
   def unstringify(saved_session):
     '''use this to instantiate a Session that reflects a session in progress'''
+    saved_session = dbutil.dict_to_object(saved_session)
     session_obj = Session(user_id=saved_session.user_id,
     model_id=saved_session.model_id, 
     user_name=saved_session.user_name, 
@@ -94,10 +95,10 @@ class Session:
   #and I've always believed about game-changing apps, "if you build it they will come" - the users, and therefore the investors
   #or maybe even just paying customers from day one. May the force be with Synthia Labs...
   def save(self):
+    print(self.stringify())
     dbutil.upsert(self.SESSION_ID, "active_sessions", self.stringify(return_as="dict"))
     print("debug: session "+self.SESSION_ID+" saved to database (active_sessions)")
     print("json dump below")
-    print(self.stringify(return_as="str"))
 
 
   def load(sessionid):
@@ -128,7 +129,7 @@ class Session:
                set_context=""):
     print(ai_name)
                  
-    self.SESSION_ID = uuid1() if not is_existing else set_session_id
+    self.SESSION_ID = str(uuid1()) if not is_existing else set_session_id
     self.model_id = model_id
     self.model = get_model(model_id)
     self.user_id = user_id

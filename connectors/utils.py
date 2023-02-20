@@ -4,8 +4,7 @@
 # so you can just go
 
 import pickledb
-db=pickledb.load("platform.db", True)
-
+db: pickledb.PickleDB =pickledb.load("platform.db.json", False)
 #and with some very small changes the whole app is migrated over
 
 def pack_key(item_key, table_name=""):
@@ -24,7 +23,7 @@ def unpack_key(full_key: str):
 
 def select_all(table_name, get_values=True):
   if get_values:
-    return [{unpack_key(k): db.get(k)} for k in filter(lambda key: key.startswith(table_name), db.getall())]
+    return [db.get(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
   else:
     return [unpack_key(k) for k in filter(lambda key: key.startswith(table_name), db.getall())]
 
@@ -35,7 +34,10 @@ def get_item(item_key, table_name=""):
 
 def upsert(item_key, table_name="", item_value=None):
   k = pack_key(item_key, table_name=table_name)
-  return db.set(k, item_value)
+  result= db.set(k, item_value)
+  db.dump()
+  return result
+  #db.("platform.db.json")
 
 
 #let's get some structure around this damn replit db
@@ -44,7 +46,8 @@ def get_or_create(item_key, table_name="", default_value=None):
   k = pack_key(item_key, table_name=table_name)
   if not db.get(k):
     db.set(k, default_value)
-  
+    db.dump()
+
   return db.get(k) # sanity check to make sure the item was 
 
 

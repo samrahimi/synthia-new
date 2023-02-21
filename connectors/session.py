@@ -41,6 +41,12 @@ def get_prompt_state(model="cofounder",
 
   prompt = prompt.replace('%AI_NAME%', ainame)
   prompt = prompt.replace("%USER_NAME%", username)
+
+  #ppl are already screwing up these tags so end users are going to make these mistakes all the time
+  #the first of many "error forgiveness hacks" this platform is sure to accumulate
+  prompt = prompt.replace("%AI_NAME", ainame)
+  prompt = prompt.replace("%USER_NAME", username)
+
   return prompt
 
 
@@ -192,6 +198,15 @@ class Session:
 
     # else:
     #   print("session restored from db, pls add to in memory session dicts after setting SESSION_ID")
+  
+  def snapshot_before_branching(self):
+
+    response = self.ask_gpt("Please summarize what we're talking about right now in one sentence. In your summary, please choose key points which frame the discussion, and do not include the small details. This summary will be used to remind you of the big picture when we branch off into a side conversation")
+    print("''' SUMMARY OF RIGHT NOW '''")
+    print(response)
+    from datetime import datetime
+    dbutil.upsert({"created_at":datetime.now()}, "snapshots", {"session_id": self.SESSION_ID, "user_id": self.user_id, "created_at": datetime.now(), "raw_snapshot": self.get_state(include_conversation=True)})
+  
   def summarize_to_context(self, truncated_conversation):
     #this is some tricky, inelegant logic.
     #we want gpt to summarize in the context of its finetuning and previous context
@@ -214,6 +229,11 @@ class Session:
     self.context += "\n\n*** Memory added at " + date_string+ " ***\n" + summary
     #todo: we should implement a classifier and pick out whatever in the convo should be added to the model's training examples, instead of being session context.
     self.save()
+
+    #insert the summary and the conversation fragment from which it was derived in the database
+    #we don't need this to restore a session or keep a thread of conversation alive
+    #but it will allow us to "travel back in time retaining awareness of the present" and jump back into an earlier discussion with a summary of the present to keep it grounded
+    #i'll build that later. time to do the UI. this backend is remarkably stable given its condition 12 hours ago!
     return summary
 
   def get_state(self, include_conversation=False):
@@ -253,7 +273,7 @@ class Session:
           + str(final_token_count))
         return final_token_count
 
-  def ask_gpt(self, message):
+  def ask_gpt(self, message, update_state=True):
     prompt_context = get_prompt_state(model=self.model_id,
                                       username=self.user_name,
                                       ainame=self.ai_name,
@@ -261,13 +281,25 @@ class Session:
                                       conversation=self.conversation)
     prompt = prompt_context + f"{self.user_name}: {message}\n{self.ai_name}:"
     response = self.gpt.query(prompt)
-    self.conversation.append(
-      f"{self.user_name}: {message}\n{self.ai_name}: {response}")
-    if (self.count_tokens() > TRUNCATE_IF_OVER):
-      print(
-        "debug: performing truncate and summarize to reduce total context length"
-      )
-      self.truncate_and_summarize()
-    self.save()
+
+    #by default update_state is enabled... this simply adds the query and reply to the ongoing thread of conversation
+    #occasionally this is not desired - sometimes the application will impersonate the current user to perform 
+    #tasks like requesting an ad-hoc "what are we talking about" summary to be used when branching off or drilling down
+    #the user is allowed to see this data, but for most use cases its more magical if they don't see everything we do to support GPT
+    #
+    #i feel like when i was 8 years old programming a commodore 64 - just like gpt it had about 32kb available memory
+    #and the whole thing was this dance of swapping data chunks between the floppy disk and RAM such that 
+    #data was fetched before it was needed but not too long before... the difference is that instead of 160k floppies
+    #i have a free instance of mongodb that holds 10 gigs and is faster than the RAM on a c64 by a lot
+    if update_state:
+      self.conversation.append(
+        f"{self.user_name}: {message}\n{self.ai_name}: {response}")
+      if (self.count_tokens() > TRUNCATE_IF_OVER):
+        print(
+          "debug: performing truncate and summarize to reduce total context length"
+        )
+        self.truncate_and_summarize()
+      self.save()
+
     return response
     #todo count tokens and summarize-to-memory if required

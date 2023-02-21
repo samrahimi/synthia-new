@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen 2</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Set the height of the parent container */
+        html,
+        body {
+            height: 100%;
+        }
+
+        /* Set the height of the chat column */
+        .chat-column {
+            height: 100%;
+        }
+
+        /* Set the chat column to take up 100% of the viewport width */
+        .chat-column .chat-container {
+            width: 100%;
+        }
+
+        /* Style the chat messages */
+        .chat-column .chat-container .messages {
+            overflow-y: scroll;
+            height: 100%;
+        }
+
+        /* Style the text input */
+        .chat-column .chat-container .message-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Style the session list */
+        .session-list {
+            height: 100%;
+            overflow-y: scroll;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Style the active session */
+        .session-list .session.active {
+            background-color: #f5f5f5;
+        }
+
+        /* Style the back button */
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            display: none;
+        }
+
+        /* Style the close button */
+        .close-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 2;
+        }
+
+        /* Show the back button when the chat is active */
+        .chat-active .back-button {
+            display: block;
+        }
+
+        /* Hide the session list when the chat is active */
+        .chat-active .session-list {
+            display: none;
+        }
+
+        /* Show the close button when the chat is active */
+        .chat-active .close-button {
+            display: block;
+        }
+
+        /* Style the chat message */
+        .chat-message {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>

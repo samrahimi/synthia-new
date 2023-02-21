@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+  <title>Login / Signup Screen</title>
+</head>
+<body>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            }
+
+            form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            form label {
+            font-weight: 600;
+            }
+
+            form button {
+            margin-top: 10px;
+            }
+
+            form button:first-of-type {
+            margin-bottom: 10px;
+            }
+
+            @media (max-width: 576px) {
+            form {
+                padding: 10px;
+            }
+            }
+
+    </style>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+        <form>
+          <h2 class="text-center mb-3">Login or Signup</h2>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter your username">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password">
+          </div>
+          <div class="mb-3">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm-password" placeholder="Confirm your password">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <div class="mt-2 text-center">or</div>
+          <button type="submit" class="btn btn-secondary w-100">Signup</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

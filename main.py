@@ -30,9 +30,9 @@ def get_routes():
 
 #the following API lets you login, signup, create new sessions with any model, get session state, send a message to gpt, and view the response
 #TODO: clone / edit / create new models, security for logins, buy credits, handle multimodal chains like @@DRAW
-@app.route('/')
-def index():
-  return render_template("index.html")
+@app.route('/www/login')
+def show_login_screen():
+  return render_template("login.html")
 
 
 @app.route('/models', methods=["GET"])

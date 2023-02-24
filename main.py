@@ -34,7 +34,9 @@ def get_routes():
 def show_login_screen():
   return render_template("login.html")
 
-
+@app.route('/www/interactions')
+def interact():
+  return render_template("chat.html", header_text="Fuck CSS")
 @app.route('/models', methods=["GET"])
 def get_models():
   return jsonify (models.list_models(include_nsfw = True))

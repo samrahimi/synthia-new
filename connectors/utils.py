@@ -8,10 +8,9 @@ from bson.objectid import ObjectId
 import pymongo
 from credentials import secrets
 
-#behold, a real db. note that you'll get an error regarding missing credentials module when you pull this from github
-#we use it for storing the mongo password and the openai api key in gpt.py - create your own, the code below is self explanatory
-client = pymongo.MongoClient(
-    "mongodb+srv://Cluster84883:"+secrets["mongo_password"]+"@cluster84883.zxzjtqk.mongodb.net/?retryWrites=true&w=majority")
+#behold, a real db. to get up and running, run the install.py script to generate credentials module based on the secrets you give it
+#and then it initializes your database with some helpful defaults...  
+client = pymongo.MongoClient(secrets["mongo"])
 db = client.synthia_core
 
 

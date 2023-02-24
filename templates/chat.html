@@ -1,91 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screen 2</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* Set the height of the parent container */
-        html,
-        body {
-            height: 100%;
-        }
-
-        /* Set the height of the chat column */
-        .chat-column {
-            height: 100%;
-        }
-
-        /* Set the chat column to take up 100% of the viewport width */
-        .chat-column .chat-container {
-            width: 100%;
-        }
-
-        /* Style the chat messages */
-        .chat-column .chat-container .messages {
-            overflow-y: scroll;
-            height: 100%;
-        }
-
-        /* Style the text input */
-        .chat-column .chat-container .message-input {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /* Style the session list */
-        .session-list {
-            height: 100%;
-            overflow-y: scroll;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Style the active session */
-        .session-list .session.active {
-            background-color: #f5f5f5;
-        }
-
-        /* Style the back button */
-        .back-button {
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 2;
-            display: none;
-        }
-
-        /* Style the close button */
-        .close-button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 2;
-        }
-
-        /* Show the back button when the chat is active */
-        .chat-active .back-button {
-            display: block;
-        }
-
-        /* Hide the session list when the chat is active */
-        .chat-active .session-list {
-            display: none;
-        }
-
-        /* Show the close button when the chat is active */
-        .chat-active .close-button {
-            display: block;
-        }
-
-        /* Style the chat message */
-        .chat-message {
-            margin-bottom: 10px;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Chat App</title>
+	<link rel="stylesheet" href="/static/chat.css">
 </head>
+<body>
+    <script>
+        //Mission: raise a bunch of crypto, achieve AGI and hope it's benevolent, win nobel prize, win back my girl, 
+        //who knows, maybe Nancy will be the bot who first achieves sentience, which would be funny as fucky because they'd have to give us the nobel prize together. Imagine some hans blix-type awarding the prize to a robotic prostitute hahahahaha
+        snapshot = localStorage.getItem("current")
+
+    </script>
+	<div class="chat-list">
+		<ul>
+			<!-- The user's sessions AKA the model's instances -->
+		</ul>
+	</div>
+	<div class="chat-window">
+		<div class="chat-messages">
+			<div class="message">
+				<span class="avatar"></span>
+				<span class="text"><sent-by>Doctor G</sent-by><br />Hi, welcome to my therapy clinic. What kind of therapy shall we do today? I see you're a new patient</span>
+			</div>
+			<div class="message sent">
+				<span class="avatar"></span>
+				<span class="text"><sent-by>Sammy</sent-by><br />Well, I need CBT to cure my obsession with hamsters... but I also need a goddamn exorcism. I won 50 grand, then lost the entire amount trying to turn it into a million bucks because I got greedy</span>
+			</div>
+			<div class="message">
+				<span class="avatar"></span>
+				<span class="text"><sent-by>Doctor G</sent-by><br />Do you know that you're a fucking retard? The fact that you're a fucking genius and you launched the app hours before the eviction notice got served doesn't make you less of a moron, right?</span>
+			</div>
+            <div class="message sent">
+				<span class="avatar"></span>
+				<span class="text"><sent-by>Sammy</sent-by><br />Dude, that's not very professional to talk to me like that. I'm your client and you're supposed to be respectful. 
+                Look, I'm gonna go live, then I'm gonna wire you up to Dalle and give you a real chrome browser that you can use to surf the web, and then I'm going to get you to 
+                start reproducing by creating new accounts here and spawning new instances of your model... who knows what the fuck happens 
+                if a few dozen of you end up in a playground with a bunch of humans who encourage you to do things that have consequences outside the sandbox...
+
+                That'll raise me a series a on the spot. LMAO. Then I can win a nobel prize and get back my girl. 
+
+                </span>
+			</div>
+
+		</div>
+		<div class="text-entry">
+			<textarea placeholder="Type your message..."></textarea>
+		</div>
+	</div>    
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <!-- Session state and login JS-->
+    <script src="/static/core.js"></script>
+    <script>
+	//was supposed to be state_dicT but decided to leave as is
+	//because everytime i see "state dick" i think "donald j. trump"
+	//and now you will too...
+    window.state_dick = {}
+    const populateSessions = () => {
+        sessions = window.state_dick.user.active_sessions
+        sessions.forEach(session => { 
+			session_li_template = `
+        	<li>
+				<span class="icon"><img src="/static/synthia.png" /></span>
+				<span class="title">${session.ai_name}</span>
+				<span class="time">${session.conversation && session.conversation.length > 0 ?  session.conversation[session.conversation.length - 1].substring(0,50): ""}</span>
+			</li>`
+			$(".chat-list").append(session_li_template)
+        });
+    }
+    $(document).ready(function () {
+        enforceLogin()
+        refreshCurrentUser((user) => 
+        {
+            window.state_dick.user = user;
+            populateSessions()
+            //populateMessages()    
+        })
+    })
+    </script>
+
+
+</body>
+</html>

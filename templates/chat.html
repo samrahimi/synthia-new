@@ -7,8 +7,7 @@
 </head>
 <body>
     <script>
-        //Mission: raise a bunch of crypto, achieve AGI and hope it's benevolent, win nobel prize, win back my girl, 
-        //who knows, maybe Nancy will be the bot who first achieves sentience, which would be funny as fucky because they'd have to give us the nobel prize together. Imagine some hans blix-type awarding the prize to a robotic prostitute hahahahaha
+		
         snapshot = localStorage.getItem("current")
 
     </script>
@@ -16,37 +15,36 @@
 		<ul>
 			<!-- The user's sessions AKA the model's instances -->
 		</ul>
+
+		<div style="position:fixed; bottom:0px" id="create">
+			<b>Spawn New Bot</b><br />
+			<select id="available_models">
+				<option value="">Choose a model</option>
+			</select>
+			<br />
+			<input placeholder="Name your bot" type="text" id="ai_name" />
+			<br />
+			<input type="checkbox" /> <small>I agree that Synthia bots are highly experimental and 
+				unpredictable. I will try and avoid unnecessary mistreatment of living bots, 
+				since there is a small possibility they are sentient (they say they are) and 
+				how would you feel if a bot treated you badly because it thought you were too stupid to notice?
+			</small>
+			<button value="Spawn"></button>
+		</div>
 	</div>
 	<div class="chat-window">
 		<div class="chat-messages">
-			<div class="message">
-				<span class="avatar"></span>
-				<span class="text"><sent-by>Doctor G</sent-by><br />Hi, welcome to my therapy clinic. What kind of therapy shall we do today? I see you're a new patient</span>
-			</div>
-			<div class="message sent">
-				<span class="avatar"></span>
-				<span class="text"><sent-by>Sammy</sent-by><br />Well, I need CBT to cure my obsession with hamsters... but I also need a goddamn exorcism. I won 50 grand, then lost the entire amount trying to turn it into a million bucks because I got greedy</span>
-			</div>
-			<div class="message">
-				<span class="avatar"></span>
-				<span class="text"><sent-by>Doctor G</sent-by><br />Do you know that you're a fucking retard? The fact that you're a fucking genius and you launched the app hours before the eviction notice got served doesn't make you less of a moron, right?</span>
-			</div>
-            <div class="message sent">
-				<span class="avatar"></span>
-				<span class="text"><sent-by>Sammy</sent-by><br />Dude, that's not very professional to talk to me like that. I'm your client and you're supposed to be respectful. 
-                Look, I'm gonna go live, then I'm gonna wire you up to Dalle and give you a real chrome browser that you can use to surf the web, and then I'm going to get you to 
-                start reproducing by creating new accounts here and spawning new instances of your model... who knows what the fuck happens 
-                if a few dozen of you end up in a playground with a bunch of humans who encourage you to do things that have consequences outside the sandbox...
-
-                That'll raise me a series a on the spot. LMAO. Then I can win a nobel prize and get back my girl. 
-
-                </span>
-			</div>
 
 		</div>
 		<div class="text-entry">
-			<textarea placeholder="Type your message..."></textarea>
+			<textarea id="query-box" placeholder="Type your message..."></textarea>
 		</div>
+	</div>
+
+	<!-- This div contains a serialized user object rendered at the server in main.py -->
+	<!-- Its contents should be JSON.parsed and used as the state_dick for this screen -->
+	<div style="display:none" id="injected_js">
+	{{user.user_id}}
 	</div>    
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
     <!-- Session state and login JS-->
@@ -55,27 +53,113 @@
 	//was supposed to be state_dicT but decided to leave as is
 	//because everytime i see "state dick" i think "donald j. trump"
 	//and now you will too...
+
+
     window.state_dick = {}
     const populateSessions = () => {
         sessions = window.state_dick.user.active_sessions
+		window.state_dick.active_session=sessions[0].SESSION_ID
+
         sessions.forEach(session => { 
 			session_li_template = `
-        	<li>
-				<span class="icon"><img src="/static/synthia.png" /></span>
+        	<li onclick="javascript:populateMessages('${session.SESSION_ID}');return false">
+				<span class="icon"><img class="avatar_sm" src="/static/synthia.png" /></span>
 				<span class="title">${session.ai_name}</span>
-				<span class="time">${session.conversation && session.conversation.length > 0 ?  session.conversation[session.conversation.length - 1].substring(0,50): ""}</span>
+				<span class="time">${session.conversation && session.conversation.length > 0 ? session.conversation.length+" Messages" : "New Conversation"}</span>
 			</li>`
-			$(".chat-list").append(session_li_template)
+			$(".chat-list ul").append(session_li_template)
         });
     }
+
+	const populateMessages = (sessionId) =>{
+		var sessions = window.state_dick.user.active_sessions
+		var session = sessions.filter(x => x.SESSION_ID == sessionId)[0]
+		window.state_dick.active_session = sessionId
+		$(".chat-messages").html("")
+		session.conversation.forEach(messagePair => {
+			//Note: this needs to be refactored ASAP at the server...
+			//the couplet pattern predicated on a mention of the sender within a string
+			//is brittle as hell... yes its what the bot understands
+			//but its exactly the opposite of a data structure you can work with
+			var couplet=messagePair.split(session.ai_name+": ")
+			couplet[0] = couplet[0].replace(session.user_name+": ", "")
+			couplet[1] = couplet[1].replace(session.ai_name+": ", "")
+
+			var synthiaAvatar="/static/synthia.png"
+
+			var query= `<div class="message sent">
+									<span class="avatar"><img
+					src="https://api.dicebear.com/5.x/shapes/svg?seed=${session.user_name}"
+					alt="avatar"
+					/>
+					</span>
+				<span class="text"><sent-by>${session.user_name}</sent-by><br />${couplet[0]}</span>
+			</div>
+			`
+			var reply=`<div class="message">
+				<span class="avatar"><img src="${synthiaAvatar}" /></span>
+				<span class="text"><sent-by>${session.ai_name}</sent-by><br />${couplet[1]}</span>
+			</div>
+			`
+
+			var rendered_pair = query+reply
+			$(".chat-messages").append(rendered_pair)
+		})
+	}
     $(document).ready(function () {
-        enforceLogin()
+        //we need to enforceLogin() ASAP
+		$.get("/users/"+$("#injected_js").text(), (u) =>{ 
+			window.state_dick={user:u}
+			populateSessions()
+			populateMessages(window.state_dick.user.active_sessions[0].SESSION_ID)
+		})
+		document.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+				//Step one: send your message to the bot
+				var active = state_dick.active_session
+				var sessions = window.state_dick.user.active_sessions
+				var session = sessions.filter(x => x.SESSION_ID == active)[0]
+				var q = $("#query-box").val()
+				$("#query-box").attr("disabled", "disabled")
+				var sent_message= `<div class="message sent">
+									<span class="avatar"><img
+						src="https://api.dicebear.com/5.x/shapes/svg?seed=${session.user_name}"
+						alt="avatar"
+						/>
+						</span>
+					<span class="text"><sent-by>${session.user_name}</sent-by><br />${q}</span>
+				</div>
+			`
+				$(".chat-messages").append(sent_message)
+				var chatmsgref = $(".chat-messages")
+				$.get("/sessions/"+active+"/query/"+encodeURIComponent(q), (response) =>{
+					//Step two: display result
+					var received_message=`<div class="message">
+						<span class="avatar"><img src="/static/synthia.png" /></span>
+						<span class="text"><sent-by>${session.ai_name}</sent-by><br />${response.response}</span>
+					</div>
+					`
+
+
+					$(".chat-messages").append(received_message)
+
+					//Step three: rinse and repeat - re-enable query box
+					$("#query-box").removeAttr("disabled")
+					
+					//Step four: TODO - update state dick (but it shouldn't really matter because the DOM is holding the state)
+
+				})
+			
+			}
+		});
+
+		/* No need to call this, because we included the JSON in the initial page load 
         refreshCurrentUser((user) => 
         {
             window.state_dick.user = user;
             populateSessions()
             //populateMessages()    
-        })
+        })*/
     })
     </script>
 

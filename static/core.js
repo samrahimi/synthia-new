@@ -60,7 +60,7 @@ $(".btn-login").on("click", (e) => {
     e.preventDefault()
 })
 
-$(".btn-signup").on("click", () => {
+$(".btn-signup").on("click", (e) => {
     signup()
     e.preventDefault()
 })
@@ -70,10 +70,11 @@ function login() {
         (result) => {
             if (result["error"])
                 $(".error").html(result["error"])
-            else
-                localStorage["logged_in_user"] = JSON.stringify(result)
+            else {
+            localStorage["logged_in_user"] = JSON.stringify(result)
             console.log("persisting user in localstorage, login success")
-            location.href = "/www/interactions"
+            location.href = "/www/interactions/"+result.user_id
+            }
 
         }
     )

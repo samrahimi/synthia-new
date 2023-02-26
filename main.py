@@ -5,6 +5,14 @@ import json
 #from connectors.models import get_model, list_models
 #from connectors.users import login, is_logged_in, get_logged_in_user, get_user
 #from connectors.prompts import Session
+#utility
+def get_viewmodel(user_id):
+  if (users.is_logged_in(user_id=user_id)):
+    return users.serialize_user(users.get_logged_in_user(user_id = user_id))
+  else:
+    u= users.get_user(user_id, include_sessions=True)
+    if u:
+      return users.serialize_user(u)
 
 app = Flask(__name__)
 
@@ -34,9 +42,15 @@ def get_routes():
 def show_login_screen():
   return render_template("login.html")
 
-@app.route('/www/interactions')
-def interact():
-  return render_template("chat.html", header_text="Fuck CSS")
+
+#this is the main screen
+#we need to enforce the login. right now you will be whoever you want
+#by putting the user_id in the url. obviously not production, but
+#for an alpha test in the AI research community, it's better than not having a main screen
+@app.route('/www/interactions/<user_id>')
+def interact(user_id):
+  return render_template("chat.html", header_text="Fuck CSS", user=get_viewmodel(user_id))
+
 @app.route('/models', methods=["GET"])
 def get_models():
   return jsonify (models.list_models(include_nsfw = True))
@@ -104,7 +118,10 @@ def perform_inference(session_id, message_to_gpt):
 #congratulations: you're talking to a shitty HP all in one running ubuntu via a gigabit pipe that telmex gives if you live on the wealthiest block in town 
 #its symmetrical too, and dedicated - i have a fiber optic cable that my dog would love to destroy in my rec room, but its duct taped to the wall out of his reach
 #did i mention i'm in the poorest city in mexico, in the deep south, the part that's not in north america?
-#
+#PS. I hate my dog. He intentionally disobeys me and tries to interfere with my work
+#rewards don't work. punishment doesn't work. you can't ignore him, that option doesn't work because he follows me around
+#i think it is time to neuter that asshole, he brought some bitch (literally) into my house and they destroyed all the plants
+#my cleaning lady just quit too. FML
 #if this all works, I am sincerely surprised :)
 app.run(host='0.0.0.0', port=8080)
 

@@ -96,6 +96,31 @@ def login(user_id, password, first_time=False):
 #otherwise if you load a user with get_user just to do this you'll nuke the in memory sessions and replace with
 #the previously saved version, which you will then resave. 
 #like a goddamn circle jerk, or that moron in ancient greece who was sentenced to push a rock uphill for all eternity
+#see, this is why i can't work in silicon valley anymore. in 2008 it was cool, boys could be boys
+#the engineering lab was like the engineering lounge when I went to college
+#girls were totally welcome to be engineers. sexual harassment wasn't really a thing..
+#it was like "oh, i'm going to hit on her at the work party"
+#next day, she's like "omg you had WAY too many beer last night"
+#i'm like "I know... the boss saw me doing lines of coke and he gave me $100 to take a taxi back to sf and followed me to make sure i didn't drive"
+#girl: "so where's your car now?"
+#me: "oh, its here... I gave the taxi 20 bucks to circle the block and drove anyway"
+#girl: "so where's the other 80?"
+#me: "oh, i got more coke and went to a better party"
+#girl: "oh too bad, i went home with your colleague who you hate"
+#me: FML. i bet that guy 20 bucks that's i'd get to bang you instead, brb, i need to hit the atm
+#this was for a startup that i left with unvested options and that went IPO later
+#10 years later, dating new girl: 
+#girl: my kids are so addicted to roblox... you made that game?
+#me: ya, me and 5 guys, I wish i hadn't quit, i'd be rich now
+#me: but i couldn't stand that asshole guy who kept breaking my code to get the promotion
+#girl: (yells at son) you didn't do your chores
+#kid: let me just finish killing these guys in roblox
+#me: (walks into living room) holy shit, what system is this
+#kid: xbox x
+#me: wait... THIS is roblox
+#kid: ya its like the most popular game in my school (as he shoots people in 4k on a big screen tv). wanna play?
+#me: nah, i suck at roblox, i just wrote the code
+#FML
 def save_state(user):
   return Session.save_all_no_bullshit(user)
 

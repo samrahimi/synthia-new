@@ -9,7 +9,7 @@ body {
 
 .chat-list {
 	float: left;
-	width: 25%;
+	width: 35%;
 	height: 100%;
 	background-color: #222;
 	color: #eee;
@@ -19,7 +19,7 @@ body {
 }
 
 .chat-list ul {
-	list-style: none;
+	list-style: none !important;
 	padding: 0;
 	margin: 0;
 }
@@ -42,6 +42,12 @@ body {
 	background-color: #555;
 	border-radius: 50%;
 	margin-right: 10px;
+	overflow:hidden !important
+}
+
+.chat-list .icon img {
+	width:30px;
+	height:30px;
 }
 
 .chat-list .title {
@@ -57,7 +63,7 @@ body {
 
 .chat-window {
 	float: left;
-	width: 75%;
+	width: 65%;
 	height: 100%;
 	background-color: #eee;
 	position: relative;
@@ -80,8 +86,8 @@ body {
   color:white;
 }
 
-.message.from {
-  font-weight:bold
+.message.from, sent-by {
+  font-weight:bold !important;
 }
 
 .message.sent{
@@ -98,13 +104,17 @@ body {
 	background-color: #555;
 	border-radius: 50%;
 	margin-right: 10px;
+	overflow: hidden !important;
+}
+
+.avatar img {
+	width:50px;
+	height:50px;
 }
 
 .text {
 	display: inline-block;
-  padding: left 50px;;
   position:relative;
-  top: -50px;
 	max-width: calc(100% - 70px);
 	font-size: 16px;
 }
@@ -114,30 +124,25 @@ body {
 	left: 0;
 	width: 100%;
 	background-color: #fff;
-	padding: 20px;
+	padding: 10px;
 	box-sizing: border-box;
 }
 
 .text-entry textarea {
 	display: block;
 	width: 100%;
-	height: 40px;
+	height: 80px;
 	resize: none;
 	padding: 10px;
 	box-sizing: border-box;
 	border: none;
 	border-radius: 5px;
-	font-size: 16px;
+	font-family: sans-serif;
 }
 
-.avatar img, .icon img {
-	overflow:hidden !important;
-	width:max-content;
-	height:max-content
-}
 
 /* Media query for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 450px) {
 	.chat-list {
 		width: 100%;
 		float: none;

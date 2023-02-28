@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login / Signup Screen</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <nav id="mainNav" class="navbar navbar-light navbar-expand-md">
+    <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/synthia.png" style="height: 63px;padding: 0px;margin: 0px;" /></a><span id="logged_in_as"></span><button class="navbar-toggler navbar-toggler-right" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" value="Menu"><i class="fa fa-bars"></i></button>
+        <div id="navbarResponsive" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                
+                <li class="nav-item nav-link"><a id="interactions" class="nav-link">interaction</a></li>
+                
+                <li class="nav-item nav-link"><a id="discovery" class="nav-link" href="#">discovery</a></li>
+                
+                <li class="nav-item nav-link"><a id="credentials" class="nav-link" href="#">credentials</a></li>
+
+                <li class="nav-item nav-link"><a id="policies" class="nav-link" href="policies.html"><i class="fa-solid fa-plus"></i></a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container h-100">
+<!-- iframes are stupid but we need to launch NOW 
+-->
+<div class="row h-100">
+    <div class="col-12 h-100">
+        <iframe src="" id="bot_sanctuary" class="w-100" style="height:calc(100% - 120px) !important; overflow:hidden"></iframe>
+    </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        logged_in_uid=""
+        api_key=""
+        const BASE_URL="http://127.0.0.1:8080/www/"
+        const loadIframe = (page) => {
+            if (!page) page="login"
+
+            
+            var final_url = `${BASE_URL}${page}`
+            $("#bot_sanctuary").attr("src", final_url)
+        }
+        loadIframe("login")
+
+
+        //bubbles up from the login screen in the iframe
+        window.setUid = (user) => {
+            $("#logged_in_as").html(user)
+            logged_in_uid= user
+        }
+
+        const setOpenAiKey = (k) => {
+            api_key=k
+        }
+    </script>
+</body>
+
+</html>

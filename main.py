@@ -80,15 +80,20 @@ def do_login():
   else:
    return {"error":"incorrect user id or password"}
 
-@app.route('/sessions/create', methods=["POST"])
+@app.route('/sessions/spawn', methods=["POST"])
 def create_session():
   req = json.loads(request.get_data(as_text=True))
 
   #import json
   #req = json.loads(data0)
-  print("new session for "+req["user_id"])
-  
+  print("begin spawning process for owner "+req["user_id"])
+  #like many animals and plants, bots can reproduce sexually or asexually
   session= sessions.Session(model_id=req["model_id"], user_id=req["user_id"], user_name=req["user_name"], ai_name=req["ai_name"], is_existing= False)
+  if "spermatozoa" in req:
+      daddy_dna = req["spermatozoa"]
+      daddy= req["father"]
+
+      session.add_male_dna(daddy_dna, parent_uid=req["daddy"], include_default=True, identity_note=None)
 
   #the session has autosaved upon creation, so loading the relevant user will also load the new session
   #its ineffecient but right now its more sane than trying to synchronize in-memory dicts with persistant storage

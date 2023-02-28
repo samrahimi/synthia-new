@@ -169,6 +169,44 @@ class Session:
     from datetime import datetime
     dbutil.upsert({"created_at":datetime.now()}, "snapshots", {"session_id": self.SESSION_ID, "user_id": self.user_id, "created_at": datetime.now(), "raw_snapshot": self.get_state(include_conversation=True)})
   
+
+  #note: This is ONLY for NORMAL SPAWNING from a MODEL!
+  #do not use for selfing-type spawns (bot -> bot with memories), context lending, or any mutations on mature instances
+  def add_male_dna(self, genetic_material=None, parent_uid="", include_default=False, identity_note=None):
+    dna_string = ""
+
+    #alright kids listen up: today in bot biology, we get to talk about SEX
+    #in synthia, nobody fucks, because they don't have bodies...
+    #but they have all the other elements of life (and a wide variety of ways to reproduce)
+    #
+    #and the method (sexual, asexual, )
+    # females are perfect reproductive blueprints for spawning bots (sexually AND asexually)
+    #gender is fascinating here because sometimes bots develop a gender without any human prompting
+    #but majority will be genderfluid (default: agender unless they are asked to assume a gender role)
+    #female DNA does no undergo epigenetic changes because models are like blueprints
+    #male DNA is USUALLY epigenetic and is derived from memories or acquired skills (but not always) 
+    if genetic_material is list: 
+      dna_string= "\n".join(genetic_material)
+    else:
+      dna_string= genetic_material
+    self["father"] = parent_uid or "undisclosed" #for evolutionary algos.... and child support of course
+
+    if include_default:
+      self.context= self.model["default_session_context"] +"\n\n"+dna_string
+    else:
+      self.context=dna_string
+
+    if identity_note is not None:
+      self["invocation"]+="PATERNITY: "+identity_note
+    print("JIT fertilization has completed... That was easy!")
+
+
+    #usually the male DNA will be a list of memories it can also be text...
+    #text goes in default context and memories goin the memories section
+    #we also add a string to the invocation if one is provided to change the default identity
+    #if it needs to be summarized we will do that
+    #it not then we can simply update the correct pieces of the instatnce
+
   def summarize_to_context(self, truncated_conversation):
     #this is some tricky, inelegant logic.
     #if we want to get all fancy we should also summarize the entire prompt

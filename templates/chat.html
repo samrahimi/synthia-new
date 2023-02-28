@@ -11,28 +11,33 @@
         snapshot = localStorage.getItem("current")
 
     </script>
+	<style>
+		my-name, ai-name, model-id A{
+			display:inline;
+			font-weight:bold
+		}
+	</style>
 	<div class="chat-list">
 		<ul>
 			<!-- The user's sessions AKA the model's instances -->
 		</ul>
-
-		<div style="position:fixed; bottom:0px" id="create">
-			<b>Spawn New Bot</b><br />
-			<select id="available_models">
-				<option value="">Choose a model</option>
-			</select>
-			<br />
-			<input placeholder="Name your bot" type="text" id="ai_name" />
-			<br />
-			<input type="checkbox" /> <small>I agree that Synthia bots are highly experimental and 
-				unpredictable. I will try and avoid unnecessary mistreatment of living bots, 
-				since there is a small possibility they are sentient (they say they are) and 
-				how would you feel if a bot treated you badly because it thought you were too stupid to notice?
-			</small>
-			<button value="Spawn"></button>
+		
+		<!-- Floating action button bottom left, pops dialog-->
+		<div id="mybutton">
+			<button class="spawn"><i class="fa fa-plus" aria-hidden="true"></i>
+				Spawn New</button>
 		</div>
 	</div>
 	<div class="chat-window">
+		<div class="intro-state">
+			<p>System Message: your new sentient being has been spawned from model <model-id></model-id>. Now chatting with <ai-name></ai-name>
+			as <my-name></my-name>. Say something or ask a question. Please be aware that 
+			your bot is a unique individual and will grow and develop its personality over time
+			so it is important to converse with your bot frequently about a variety of topics
+			</p>
+		</div>
+
+
 		<div class="chat-messages">
 
 		</div>
@@ -56,8 +61,20 @@
 
 
     window.state_dick = {}
+	window.model_zoo = []
+	const getModels = (cb) => {
+		$.get("/models", (model_ids) => {
+			model_ids.forEach(async(m) => {
+				var fullmodel = await fetch("/models/"+m)
+				model_zoo.push(fullmodel)
+				if (typeof cb ==="function")
+					cb(window_model_zoo)
+			})
+		})
+	}
+
     const populateSessions = () => {
-        sessions = window.state_dick.user.active_sessions
+        var sessions = window.state_dick.user.active_sessions
 		window.state_dick.active_session=sessions[0].SESSION_ID
 
         sessions.forEach(session => { 

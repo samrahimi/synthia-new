@@ -21,6 +21,8 @@ def reproduce(mutation_rate=0.05, user_id="", parent_id="super_gpt", new_id="bab
     print("Error: model id is taken, try again")
     return None
   else:
+    print("debug: cloning model "+parent_id+" into "+new_id)
+    print("debug: mutations not yet implemented, mutation_rate will be ignored")
     new_model = dbutils.deep_copy(original) 
     new_model["model_id"] = new_id
     new_model["parent_id"] = parent_id

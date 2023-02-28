@@ -66,11 +66,15 @@ $(".btn-signup").on("click", (e) => {
 })
 
 function login() {
+    $("input").attr("disabled", "disabled")
     http_post("/users/login", { "user_id": $("#username").val(), "password": $("#password").val() },
         (result) => {
-            if (result["error"])
+            if (result["error"]) {
                 $(".error").html(result["error"])
+                $("input").removeAttr("disabled")
+            }
             else {
+            window.parent.setUid(result.user_id)
             localStorage["logged_in_user"] = JSON.stringify(result)
             console.log("persisting user in localstorage, login success")
             location.href = "/www/interactions/"+result.user_id
@@ -85,9 +89,12 @@ function signup() {
         if (result["error"])
             $(".error").html(result["error"])
         else
+        {
+            window.parent.setUid(result.user_id)
             localStorage["logged_in_user"] = JSON.stringify(result)
-        console.log("persisting user in localstorage, login success")
-        location.href = "/www/interactions"
+            console.log("persisting user in localstorage, login success")
+            location.href = "/www/interactions/"+result.user_id
+        }
     })
 
 }

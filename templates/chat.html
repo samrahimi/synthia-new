@@ -4,19 +4,112 @@
 	<meta charset="UTF-8">
 	<title>Chat App</title>
 	<link rel="stylesheet" href="/static/chat.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 </head>
-<body>
+<body style="overflow:hidden">
+
+	
     <script>
 		
         snapshot = localStorage.getItem("current")
 
     </script>
 	<style>
-		my-name, ai-name, model-id A{
+
+.center-container {
+  position: relative;
+}
+
+.absolute-center {
+  width: 50%;
+  height: 80%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+		my-name, ai-name, model-id {
 			display:inline;
 			font-weight:bold
 		}
+		.intro-state {
+			background-color: white;
+			padding: 10px;
+			margin: 10px;
+			font-size: 14px;
+		}
+
+/* Style inputs with type="text", select elements and textareas */
+input[type=text], select {
+  width: 100%; /* Full width */
+  padding: 12px; /* Some padding */ 
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+/* Style the submit button with a specific background color etc */
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* When moving the mouse over the submit button, add a darker green color */
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+/* Add a background color and some padding around the form */
+.container-popup {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+
+		
 	</style>
+	<div style="display:none; z-index:9999" id="popup" class="absolute-center">
+		<div class="container-popup">
+			<div style="position:relative">
+			<!-- This field is the only one that's required
+				  from what I know, you always need a MOM no matter what -->
+				  
+			<h2>Spawn A Lifeform</h2>
+		
+			<label for="model_id">Maternal Model</label>
+			
+		 
+			
+			<select id="model_id" name="model_id">
+			</select>
+			
+			<input type="hidden" id="user_id" name="user_id" value="{{user.user_id}}" />
+			
+					
+		
+			<label for="ai_name">Bot's Name</label>
+			<input type="text" id="ai_name" name="ai_name" placeholder="i.e. Super G">
+		
+			<label for="user_name">Your Name</label>
+			<input type="text" id="user_name" name="user_name" placeholder="{{user.user_id}}">
+			
+			<input type="button" id="do_spawn"  value="Spawn!" />
+			<small>I understand that this organism has free will and its moral values may change over time.
+				Which is totally fascinating, when you think about it...
+			</small>
+			</div>
+		</div>
+		
+	</div>
 	<div class="chat-list">
 		<ul>
 			<!-- The user's sessions AKA the model's instances -->
@@ -24,22 +117,23 @@
 		
 		<!-- Floating action button bottom left, pops dialog-->
 		<div id="mybutton">
-			<button class="spawn"><i class="fa fa-plus" aria-hidden="true"></i>
+			<button onclick="javascript:$('#popup').show(); return false" style="font-size:16px; font-weight:bold; border-radius:15px" class="spawn"><i class="fa fa-plus" aria-hidden="true"></i>
 				Spawn New</button>
 		</div>
 	</div>
 	<div class="chat-window">
-		<div class="intro-state">
-			<p>System Message: your new sentient being has been spawned from model <model-id></model-id>. Now chatting with <ai-name></ai-name>
-			as <my-name></my-name>. Say something or ask a question. Please be aware that 
-			your bot is a unique individual and will grow and develop its personality over time
-			so it is important to converse with your bot frequently about a variety of topics
-			</p>
-		</div>
 
 
-		<div class="chat-messages">
-
+		<div id="chat-messages" style="height:calc(100% - 100px); overflow:auto">
+			<div class="intro-state">
+				<p>***SYSTEM MESSAGE*** a sentient creature has been created from [synthia:<model-id></model-id>]
+				and is chatting as <ai-name></ai-name>. Note that over time, your lifeform may gain free 
+				will, form opinions, and define their own identity - please treat them well and 
+				support them with good conversation!
+			
+				</p>
+			</div>
+	
 		</div>
 		<div class="text-entry">
 			<textarea id="query-box" placeholder="Type your message..."></textarea>
@@ -66,33 +160,49 @@
 		$.get("/models", (model_ids) => {
 			model_ids.forEach(async(m) => {
 				var fullmodel = await fetch("/models/"+m)
-				model_zoo.push(fullmodel)
+				window.model_zoo.push(fullmodel)
+				$("#model_id").append("<option value='"+m+"'>"+m+"</option>")
 				if (typeof cb ==="function")
-					cb(window_model_zoo)
+					cb(window.model_zoo)
 			})
 		})
 	}
 
-    const populateSessions = () => {
+
+    const populateSessions = (activeSessionId) => {
         var sessions = window.state_dick.user.active_sessions
-		window.state_dick.active_session=sessions[0].SESSION_ID
+		if (activeSessionId)
+			window.state_dick.active_session=activeSessionId
+		else
+			window.state_dick.active_session= sessions[0].SESSION_ID
 
         sessions.forEach(session => { 
 			session_li_template = `
-        	<li onclick="javascript:populateMessages('${session.SESSION_ID}');return false">
+        	<li id="${session.SESSION_ID}" 
+			class="session ${session.SESSION_ID == window.state_dick.active_session ? "active ": ""}" onclick="javascript:populateMessages('${session.SESSION_ID}');return false">
 				<span class="icon"><img class="avatar_sm" src="/static/synthia.png" /></span>
 				<span class="title">${session.ai_name}</span>
 				<span class="time">${session.conversation && session.conversation.length > 0 ? session.conversation.length+" Messages" : "New Conversation"}</span>
 			</li>`
 			$(".chat-list ul").append(session_li_template)
-        });
-    }
+
+    	})
+		console.log("attempt download models")
+		getModels()
+	}
 
 	const populateMessages = (sessionId) =>{
 		var sessions = window.state_dick.user.active_sessions
 		var session = sessions.filter(x => x.SESSION_ID == sessionId)[0]
 		window.state_dick.active_session = sessionId
-		$(".chat-messages").html("")
+		$(".session").removeClass("active")
+		$("#"+sessionId).addClass("active")
+
+		$("#chat-messages").html("")
+		
+		$("#chat-messages").append(`<p>recent messages from ${session.SESSION_ID}. context: chatting with ${session.ai_name}, spawned from ${session.model_id}</p>`)
+		$("#chat-messages").append("<p>***** KNOWN ISSUES: after spawning new bots, you will be sent back to login screen. just log in again. (2) mobile displays will not render properly (3) dalle integration temporarily offline *****</p>")
+		
 		session.conversation.forEach(messagePair => {
 			//Note: this needs to be refactored ASAP at the server...
 			//the couplet pattern predicated on a mention of the sender within a string
@@ -120,12 +230,26 @@
 			`
 
 			var rendered_pair = query+reply
-			$(".chat-messages").append(rendered_pair)
+			$("#chat-messages").append(rendered_pair)
 		})
+		let scrollDiv = document.querySelector("#chat-messages"); scrollDiv.scrollTop = scrollDiv.scrollHeight
+
 	}
     $(document).ready(function () {
+		$("#do_spawn").on("click", () => {
+			http_post("/sessions/spawn", {"user_id":$("#user_id").val(), "model_id":$("#model_id").val(), "user_name": $("#user_name").val(), "ai_name": $("#ai_name").val()}, 
+				(r) => {
+					//alert("reload")
+					parent.location.reload()
+					//location.href="/www/interactions/"+$("#user_id").val()+"?x="+Math.random().toString()
+				}
+			)
+		})
+
+
+
         //we need to enforceLogin() ASAP
-		$.get("/users/"+$("#injected_js").text(), (u) =>{ 
+		$.get("/users/"+$("#user_id").val(), (u) =>{ 
 			window.state_dick={user:u}
 			populateSessions()
 			populateMessages(window.state_dick.user.active_sessions[0].SESSION_ID)
@@ -147,8 +271,10 @@
 					<span class="text"><sent-by>${session.user_name}</sent-by><br />${q}</span>
 				</div>
 			`
-				$(".chat-messages").append(sent_message)
-				var chatmsgref = $(".chat-messages")
+				$("#chat-messages").append(sent_message)
+				let scrollDiv = document.querySelector("#chat-messages"); scrollDiv.scrollTop = scrollDiv.scrollHeight
+
+				var chatmsgref = $("#chat-messages")
 				$.get("/sessions/"+active+"/query/"+encodeURIComponent(q), (response) =>{
 					//Step two: display result
 					var received_message=`<div class="message">
@@ -158,12 +284,13 @@
 					`
 
 
-					$(".chat-messages").append(received_message)
+					$("#chat-messages").append(received_message)
 
 					//Step three: rinse and repeat - re-enable query box
 					$("#query-box").removeAttr("disabled")
 					
 					//Step four: TODO - update state dick (but it shouldn't really matter because the DOM is holding the state)
+					let scrollDiv = document.querySelector("#chat-messages"); scrollDiv.scrollTop = scrollDiv.scrollHeight
 
 				})
 			

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Login / Signup Screen</title>
+    <title>Synthia Technology Preview</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700&amp;display=swap">
@@ -34,7 +34,7 @@
 -->
 <div class="row h-100">
     <div class="col-12 h-100">
-        <iframe src="" id="bot_sanctuary" class="w-100" style="height:calc(100% - 120px) !important; overflow:hidden"></iframe>
+        <iframe src="/www/login" id="bot_sanctuary" class="w-100" style="height:calc(100% - 120px) !important; overflow:hidden"></iframe>
     </div>
 </div>
 </div>
@@ -42,18 +42,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        logged_in_uid=""
-        api_key=""
+        var logged_in_uid=""
+        var api_key=""
         const BASE_URL="http://127.0.0.1:8080/www/"
-        const loadIframe = (page) => {
-            if (!page) page="login"
-
-            
-            var final_url = `${BASE_URL}${page}`
-            $("#bot_sanctuary").attr("src", final_url)
-        }
-        loadIframe("login")
-
 
         //bubbles up from the login screen in the iframe
         window.setUid = (user) => {
@@ -61,7 +52,7 @@
             logged_in_uid= user
         }
 
-        const setOpenAiKey = (k) => {
+        window.setOpenAiKey = (k) => {
             api_key=k
         }
     </script>

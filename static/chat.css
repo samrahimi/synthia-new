@@ -9,16 +9,15 @@ body {
 .spawn, .spawn i{
 	background-color : #31B0D5;
 	color: white;
-	padding: 10px 20px;
 	border-radius: 4px;
+	padding:5px;
 	border-color: #46b8da;
   }
   
   #mybutton {
-	position: fixed;
-	bottom: 10px;
-	left: 10px;
-  }	
+	margin-top:50px;
+	text-align: center;
+}	
 
 .chat-list {
 	float: left;

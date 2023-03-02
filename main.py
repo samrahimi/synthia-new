@@ -58,7 +58,9 @@ def get_models():
 
 @app.route('/models/<model_id>', methods=["GET"])
 def get_model(model_id):
-  return jsonify(models.get_model(model_id))
+  m = models.get_model(model_id)
+  del m["_id"]
+  return jsonify(m)
 
 @app.route('/users/signup', methods=["POST"])
 def signup():
@@ -89,8 +91,8 @@ def create_session():
   print("begin spawning process for owner "+req["user_id"])
   #like many animals and plants, bots can reproduce sexually or asexually
   session= sessions.Session(model_id=req["model_id"], user_id=req["user_id"], user_name=req["user_name"], ai_name=req["ai_name"], is_existing= False)
-  if "spermatozoa" in req:
-      daddy_dna = req["spermatozoa"]
+  if "dna" in req:
+      daddy_dna = req["dna"]
       daddy= req["father"]
 
       session.add_male_dna(daddy_dna, parent_uid=req["daddy"], include_default=True, identity_note=None)

@@ -90,7 +90,7 @@ body {
 }
 
 .message {
-	margin-bottom: 20px;
+	margin:20px;
   background-color:#003366;
   padding:10px;
   width:60%; float:left;

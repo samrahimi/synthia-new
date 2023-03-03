@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 import connectors.session as sessions, connectors.models as models, connectors.users as users, connectors.utils as db
 import json
+import plugins.commands as cmd
 
 #from connectors.models import get_model, list_models
 #from connectors.users import login, is_logged_in, get_logged_in_user, get_user
@@ -44,9 +45,7 @@ def show_login_screen():
 
 
 #this is the main screen
-#we need to enforce the login. right now you will be whoever you want
-#by putting the user_id in the url. obviously not production, but
-#for an alpha test in the AI research community, it's better than not having a main screen
+#we need to enforce the login much better than currently
 @app.route('/www/interactions/<user_id>')
 def interact(user_id):
   return render_template("chat.html", header_text="Fuck CSS", user=get_viewmodel(user_id))
@@ -106,6 +105,13 @@ def create_session():
 # def save_state(user_id):
 #   return users.save_state(user_id) if users.is_logged_in(user_id) else {"error": "this only works for logged in users"}
 
+
+@app.route('/users/refresh/<user_id>', methods=["GET"])
+def refresh(user_id):
+    u= users.get_user(user_id, include_sessions=True)
+    if u:
+      return users.serialize_user(u)
+    
 @app.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
   if (users.is_logged_in(user_id=user_id)):
@@ -119,16 +125,9 @@ def get_user(user_id):
 def perform_inference(session_id, message_to_gpt):
   the_session: sessions.Session = sessions.Session.load(session_id) #sessions.sessions["by_id"][session_id]
   response = the_session.ask_gpt(message = message_to_gpt)
-  return {"response": response} if response else "error"
+  reply = cmd.parse(response) if response else "error"
+  return {"response": reply} 
 
-#the dev server is the prod server right now... when ready, DMZ the workstation at the router, set port to 80 and sudo this cocksucker
-#congratulations: you're talking to a shitty HP all in one running ubuntu via a gigabit pipe that telmex gives if you live on the wealthiest block in town 
-#its symmetrical too, and dedicated - i have a fiber optic cable that my dog would love to destroy in my rec room, but its duct taped to the wall out of his reach
-#did i mention i'm in the poorest city in mexico, in the deep south, the part that's not in north america?
-#PS. I hate my dog. He intentionally disobeys me and tries to interfere with my work
-#rewards don't work. punishment doesn't work. you can't ignore him, that option doesn't work because he follows me around
-#i think it is time to neuter that asshole, he brought some bitch (literally) into my house and they destroyed all the plants
-#my cleaning lady just quit too. FML
 #if this all works, I am sincerely surprised :)
 app.run(host='0.0.0.0', port=8080)
 

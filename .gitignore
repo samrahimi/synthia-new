@@ -3,3 +3,6 @@ venv
 venv/*
 __pycache__
 credentials.py
+static/img_dalle/*
+static/img_dalle
+img_dalle

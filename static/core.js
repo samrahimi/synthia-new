@@ -65,6 +65,15 @@ $(".btn-signup").on("click", (e) => {
     e.preventDefault()
 })
 
+function refreshLogin(uid, callback) {
+    http_post("/users/login", { "user_id": uid, "password": "", "refresh": True },
+    (result) => {
+        if (callback && typeof callback == "function") {
+            callback(result)
+        }
+    })
+}
+
 function login() {
     $("input").attr("disabled", "disabled")
     http_post("/users/login", { "user_id": $("#username").val(), "password": $("#password").val() },
@@ -74,7 +83,8 @@ function login() {
                 $("input").removeAttr("disabled")
             }
             else {
-            window.parent.setUid(result.user_id)
+            if (window.location.href != window.parent.location.href)
+                window.parent.setUid(result.user_id)
             localStorage["logged_in_user"] = JSON.stringify(result)
             console.log("persisting user in localstorage, login success")
             location.href = "/www/interactions/"+result.user_id

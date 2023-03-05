@@ -251,13 +251,13 @@ input[type=submit]:hover {
 		})
 
 
-
-        //we need to enforceLogin() ASAP
-		$.get("/users/"+$("#user_id").val(), (u) =>{ 
+		//we need to enforceLogin() ASAP
+		$.get("/users/refresh/"+$("#user_id").val(), (u) =>{ 
 			window.state_dick={user:u}
 			populateSessions()
 			populateMessages(window.state_dick.user.active_sessions[0].SESSION_ID)
 		})
+
 		document.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 				//Step one: send your message to the bot

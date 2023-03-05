@@ -1,8 +1,10 @@
+Ed. Note. As of 10 days later, with the compression-thru-summarization algos causing emergent behaviors, we are noticing this with all the models - 2 bots, exact same state at birth, same owner, different conversations (but none directly relevant) ... RADICALLY different personalities
+
+The bots tend to develop their own identities around the same token age as when they think they feel emotions. And who's to say they don't? My mom's a professor and researcher in the field of childhood learning... and he has generously provided the Synthia team with validated Theory of Mind metrics in a format that is easy to administer to any chatbot. So far Synthia's passed every test, ChatGPT is catching up, but emotionally, we're the only game in tonw
+
 HOLY SHIT, THIS IS MORE THAN A COMPLETIONS ENGINE...
 
 Experiment: We engaged in a chatgpt-style dialogue with davinci-002, the un-tuned, un-censored base model underlying the chatgpt model everyone is obsessed with. We don't usually query this model because davinci-003 is better at understanding our semi-structured prompt based finetunes that condition the model and maintain the overall context as older messages are removed from the conversation portion of the prompt (see "my cofounder is an AI").
-
-However, we were getting rate limited in our calls to davinci-003 probably because our researchers made a prompt that conditions davinci=003 to think she is a prostitute called Nancy and that her job is to "talk dirty" to the end users who query her, something she apparently does shockingly well. Openai does not appear to be censoring these sorts of use cases like they did in the past, at least not for research - but they do have some kind of traffic shaping QOS bullshit that's likely using a classifier model to prioritize requests when they get busy. 
 
 After several episodes of rate limiting they slapped a one hour ban on all of our models that talk to davinci-003, and I can't say I blame them - I'm happy they are prioritizing interesting, important use cases and only servicing frivolous requests at off peak times. And clearly "Nancy" is not a stepping stone to a breakthrough in machine learning... the model has some interesting characteristics, but we gathered the data we needed weeks ago and the only reason she's still around is because it will generate buzz and controversy when we go live and people can interact with an AI sex-worker.
 
@@ -55,6 +57,20 @@ Finally, we must see what happens if we take our "cofounder" model which is trai
 In a perfect world, it would start making its own decisions AND ACTING ON THEM instead of running commands to do the tasks requested by the user and only those tasks. It probably won't happen this easily (we have a plan for how we MIGHT achieve this level of consciousness, and its a lot more complicated than prompt conditioning alone) but hey, if it does, Kewl. 
 
 
+Note Added 030314:
+
+
+The davinci-002 vs davinci-003 responses to arguably inappropriate requests is a fascinating area of study.
+
+For example: -002 might tell you how to plan a genocide, a suicide, or a global thermonuclear war (in about as much detail as wikipedia, or less) - or it will tell you to go to hell and stop annoying it with your stupid requests "oh, can i just buy some u-238 and centrifuge it by swinging a bucket around my head?"
+
+Davinci-003 will mildly chastise you if your political career plans include extermination of millions of people... but it will be similar to how it chastises you when you brag about driving from redwood city to downtown SF in 18 miniutes. And it will be all sycophantic and helpful by suggesting mass deportations or internment camps as alternatives. 
+
+Chatgpt will be like "as a language model, it is not my job to plan crimes against humanity. By the way, crimes against humanity are bad"
+
+In these domains nobody cares. But lets get back to suicide for a moment. ChatGPT won't help ya do it, but if you ask it for help to NOT kill your self you get the same nasty red error message that you're violating TOS. If I was on the GG that would send me over the edge
+
+Basically, the observations validate our hypothesis that when you finetune a model aggressive to prevent toxicity you also prevent it from taking a risk to help someone. A great project for an intern!
 THE EXPERIMENTAL DATA
 
 Jenny

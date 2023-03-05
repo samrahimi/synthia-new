@@ -84,7 +84,8 @@ function login() {
             }
             else {
             if (window.location.href != window.parent.location.href)
-                window.parent.setUid(result.user_id)
+                //who fucking cares window.parent.setUid(result.user_id)
+                console.log("Running in an iframe. If your container needs to be notified, do it here")
             localStorage["logged_in_user"] = JSON.stringify(result)
             console.log("persisting user in localstorage, login success")
             location.href = "/www/interactions/"+result.user_id
@@ -100,7 +101,7 @@ function signup() {
             $(".error").html(result["error"])
         else
         {
-            window.parent.setUid(result.user_id)
+            //window.parent.setUid(result.user_id)
             localStorage["logged_in_user"] = JSON.stringify(result)
             console.log("persisting user in localstorage, login success")
             location.href = "/www/interactions/"+result.user_id

@@ -36,7 +36,9 @@ def get_routes():
 
     return jsonify(routes)
 
-
+@app.route("/")
+def redirect_to_splash():
+  return render_template("index.html")
 #the following API lets you login, signup, create new sessions with any model, get session state, send a message to gpt, and view the response
 #TODO: clone / edit / create new models, security for logins, buy credits, handle multimodal chains like @@DRAW
 @app.route('/www/login')

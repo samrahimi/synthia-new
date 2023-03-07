@@ -30,14 +30,20 @@ def reproduce(mutation_rate=0.05, user_id="", parent_id="super_gpt", new_id="bab
     dbutils.upsert({"model_id": new_id}, "chat_models", new_model)
     return new_model
 
-def update(invocation="", model_id="", training_examples = [], default_session_context=""):
-  dbutils.upsert({"model_id": model_id},"chat_models", {"training_examples": training_examples, "default_session_context": default_session_context, "invocation": invocation})
 
-def create_new(user_id="", invocation="", model_id="", training_examples = [], default_session_context=""):
-  if (get_model(model_id)):
+def create_new(user_id="", invocation="", model_id="", training_examples = "", default_session_context="", openai_settings={}, synthia_settings={}, is_update=False, nsfw=False):
+  if (not is_update and get_model(model_id)):
     print("Model ID taken, choose another or call update")
     return None
-  return dbutils.upsert({"model_id": model_id},"chat_models", {"owner": user_id, "training_examples": training_examples, "default_session_context": default_session_context, "invocation": invocation})
+  return dbutils.upsert({"model_id": model_id},"chat_models", 
+                        {"owner": user_id, 
+                         "description":"A very nice model. Perhaps a supermodel", 
+                         "training_examples": training_examples, 
+                         "default_session_context": default_session_context,
+                         "openai_settings": openai_settings,
+                         "synthia_settings": synthia_settings, 
+                         "invocation": invocation,
+                         "nsfw": nsfw})
 
 def populate_base_models(models_dict):
   model_keys= models_dict.keys()

@@ -127,7 +127,8 @@ class Session:
                is_existing = False,
                set_session_id=0,
                set_convo=[],
-               set_context=""):
+               set_context="",
+               is_chatgpt=False):
     print(ai_name)
                  
     self.SESSION_ID = str(uuid1()) if not is_existing else set_session_id
@@ -138,6 +139,7 @@ class Session:
     self.ai_name = ai_name
     self.conversation = [] if not is_existing else set_convo
     self.settings = self.model["openai_settings"]
+      
     if not is_existing: 
       self.context = self.model["default_session_context"] or ""
     else:
@@ -161,14 +163,20 @@ class Session:
     else:
       print("debug: successfully instantiated saved session")
   
+  def distill_new_model(self, new_model_id=""):
+    response=self.ask_gpt("Please summarize everything we have talked about, including all of your memories. The goal is to capture the essence of your current state so we can use that to spawn new lifeforms")
+    print("''' SUMMARY OF RIGHT NOW '''")
+
+
   def snapshot_before_branching(self):
+
 
     response = self.ask_gpt("Please summarize what we're talking about right now in one sentence. In your summary, please choose key points which frame the discussion, and do not include the small details. This summary will be used to remind you of the big picture when we branch off into a side conversation")
     print("''' SUMMARY OF RIGHT NOW '''")
     print(response)
     from datetime import datetime
     dbutil.upsert({"created_at":datetime.now()}, "snapshots", {"session_id": self.SESSION_ID, "user_id": self.user_id, "created_at": datetime.now(), "raw_snapshot": self.get_state(include_conversation=True)})
-  
+
 
   #note: This is ONLY for NORMAL SPAWNING from a MODEL!
   #do not use for selfing-type spawns (bot -> bot with memories), context lending, or any mutations on mature instances

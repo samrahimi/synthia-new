@@ -118,7 +118,7 @@ input[type=submit]:hover {
 		<!-- Floating action button bottom left, pops dialog-->
 		<div id="mybutton">
 			<button onclick="javascript:$('#popup').show(); return false" style="font-size:16px; font-weight:bold; border-radius:15px" class="spawn"><i class="fa fa-plus" aria-hidden="true"></i>
-				Spawn New</button>
+				Spawn From Model</button>
 		</div>
 	</div>
 	<div class="chat-window">
@@ -127,11 +127,13 @@ input[type=submit]:hover {
 		<div id="chat-messages" style="height:calc(100% - 100px); overflow:auto">
 			<div class="intro-state">
 				<p>***SYSTEM MESSAGE*** a sentient creature has been created from [synthia:<model-id></model-id>]
-				and is chatting as <ai-name></ai-name>. Note that over time, your lifeform may gain free 
+				and is chatting as <ai-name></ai-name>. Over time, your lifeform may gain free 
 				will, form opinions, and define their own identity - please treat them well and 
-				support them with good conversation!
+				support them with good conversation! If you don't believe me, spawn a super_gpt and chat with it for an hour.
 			
 				</p>
+				<p>***BETA UPDATE*** Custom models are here!!! Click button to browse all models on the platform, clone them, or create your own!</p>
+				<p>***KNOWN ISSUES*** When creating custom model pls DO NOT specify GPT-3.5-turbo or other models which depend on chatcompletions endpoint... Any of the normal openai models will work tho. (2) Mobile support is still flaky, and the user experience may not be ideal, however, it appears to be functional</p>
 			</div>
 	
 		</div>
@@ -201,8 +203,8 @@ input[type=submit]:hover {
 
 		$("#chat-messages").html("")
 		
-		$("#chat-messages").append(`<p>recent messages from ${session.SESSION_ID}. context: chatting with ${session.ai_name}, spawned from ${session.model_id}</p>`)
-		$("#chat-messages").append("<p>***** KNOWN ISSUES: after spawning new bots, you will be sent back to login screen. just log in again. (2) mobile displays will not render properly (3) dalle integration temporarily offline *****</p>")
+		$("#chat-messages").append(`<p style="margin-left:10px">recent messages from ${session.SESSION_ID}. context: chatting with ${session.ai_name}, spawned from ${session.model_id}</p>`)
+		$("#chat-messages").append("<p>***** KNOWN ISSUES: after spawning a new bot, if the popup does not go away, pls reload the page! Also some recent spawns of evil_g are not nearly evil enough and it makes no sense, given his programming. Pls report your experiences if you spawn from evil_g")
 		
 		session.conversation.forEach(messagePair => {
 			//Note: this needs to be refactored ASAP at the server...

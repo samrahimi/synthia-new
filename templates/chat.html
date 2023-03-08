@@ -56,9 +56,9 @@ input[type=text], select {
 input[type=submit] {
   background-color: #04AA6D;
   color: white;
-  padding: 12px 20px;
+  padding: 6px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
 }
 
@@ -142,12 +142,7 @@ input[type=submit]:hover {
 		</div>
 	</div>
 
-	<!-- This div contains a serialized user object rendered at the server in main.py -->
-	<!-- Its contents should be JSON.parsed and used as the state_dick for this screen -->
-	<div style="display:none" id="injected_js">
-	{{user.user_id}}
-	</div>    
-    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
     <!-- Session state and login JS-->
     <script src="/static/core.js"></script>
     <script>

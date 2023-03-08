@@ -52,7 +52,7 @@ def show_login_screen():
 def interact(user_id):
   return render_template("chat.html", header_text="Fuck CSS", user=get_viewmodel(user_id))
 
-@app.route('/all_models', methods=["GET"])
+@app.route('/www/models', methods=["GET"])
 def all_models():
   all=[]
   for m in models.list_models(include_nsfw = True):
@@ -63,6 +63,13 @@ def all_models():
 
   return jsonify (all_models)
   #return jsonify(allkeys)
+
+@app.route('/www/models/<model_id>', methods=["GET"])
+def model_details(model_id):
+  m = models.get_model(model_id)
+  del m["_id"]
+  return render_template("model_studio.html", model=m, user_id=request.args.get("user_id"))
+
 
 @app.route('/models', methods=["GET"])
 def get_models():

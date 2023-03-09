@@ -13,48 +13,34 @@
             textarea {height:250px !important}
         </style>
     </head>
-    <body class="bg-light sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html"><img src="/static/logo_navbar.png" width="140"></a>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item"><a class="nav-link">Chat</a></li>
-                <li class="nav-item"><a class="nav-link">Models</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/static/index.html">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+    <body class="bg-light">
 
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Model Studio</h3></div>
+                                    <div class="card-header">
+                                    <h3 class="text-center font-weight-light my-4">Synthia Labs - AI Genetics Studio</h3>
+                                    If this is not your model, you can remix it by choosing a new model id and saving your changes. 
+                                </div>
                                     <div class="card-body">
                                         <form action="/model/save" method="POST">
                                             <input type="hidden" id="user_id" name="user_id" value="{{user_id}}" />
                                             <input type="hidden" id="owner" name="owner" value='{{model["owner"]}}' />
-                                            <input type="hidden" id="allow_update" value="True" />
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" value='{{model["model_id"]}}' id="model_id" type="text" placeholder="Like a user ID, for a model" />
+                                                        <small></small>
+                                                        <input name="model_id" class="form-control" value='{{model["model_id"] if ("model_id" in model and user_id==model["owner"]) else ""}}' id="model_id" type="text" placeholder="Like a user ID, for a model" />
                                                         <label for="model_id">Model ID</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating">
-                                                        <input class="form-control" value='{{model["model_description"]}}' id="model_description" type="text" placeholder="Brief Use Case" />
+                                                        <input class="form-control" name="model_description" value='{{model["model_description"]}}' id="model_description" type="text" placeholder="Brief Use Case" />
                                                         <label for="model_description">Descriptive Name</label>
                                                     </div>
                                                 </div>
@@ -66,7 +52,7 @@
                                             </div>
 
                                             <div class="form-floating mb-3">
-                                                <textarea class="form-control" id="training_examples">{{model["training_examples"]}}</textarea>
+                                                <textarea name="examples" class="form-control" id="training_examples">{{model["training_examples"]}}</textarea>
                                                 <label for="examples">Training / Skills</label>
                                             </div>
 
@@ -78,26 +64,19 @@
 
                                             <div class="form-floating mb-3">
                                                 <textarea name="openai_settings" class="form-control" id="openai_settings" >{{model["openai_settings"]}}</textarea><br />
-                                                <small>Must be valid JSON. Refer to OpenAI completions API docs. If you don't know what you're doing, don't fuck with it.</small>
-                                                <label for="inputEmail">Hyperparameters (Advanced Settings)</label>
+                                                <label for="openai_settings">Hyperparameters (Advanced Settings)</label>
                                             </div>
                                             <div class="mt-4 mb-0">
                                                 <div class="d-grid"><input type="submit" class="btn btn-primary btn-submit"></div>
-                                                <br /><br />
-                                                <div class="d-grid"><a class="btn  btn-block" href="/www/models">Cancel</a></div>
-
                                             </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="#">Cancel</a></div>
+                                        <div class="small"><a href="/www/interactions/{{user_id}}">Cancel</a></div>
                                     </div>
 
-                                    <p>Some definitions: our models are context models, which means they are created in normal english and provide context for the conversation. A complete request includes ground truths, recent memories, the last few messages in a conversation, and the settings with which to call the underlying GPT-style model</p>
-                                    <p>A bot, or instance, is a specific individual in our econsystem. A bot is created when a user (who may be of any species) spawns a new bot from on of the models</p>
-                                    <p>In general, a context model species the things that do not change over the course of the bot's lifetime, so at birth, the context model is taken quite literally by the bot
-                                        However, Synthia bots have memories. Humanoid memories. As the model fills up with memories, these will have and increasingly profound effect on the bot's personality and behavior.
-                                    </p>
+                                    <p>Some definitions: our models are the combination of a special prompt structure, an openai gpt model, and the synthia memory consolidation model. Add your few-shot training examples in the box below or train individual bots in the chat</p>
+                                    <p>A bot is the combination of a Synthia model and its experiences (i.e. the conversation it has with its owner) - it is a specific individual, created using the "Spawn" button in the main chat window</p>
 	                                <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
                                     <script>
                                         const http_post = (endpoint, payload, response_handler) => {
@@ -116,7 +95,13 @@
                                             $(".btn-submit").on("click", () => {
                                                 if ($("#user_id").val() != $("#owner").val()) {
                                                     $("#owner").val($("#user_id").val())
-                                                    $("#allow_update").val("False")
+                                                    //$("#allow_update").val("False")
+
+                                                }
+                                                if ($("#model_id").val() == "")
+                                                { 
+                                                    alert("Model ID and openai settings are required, everything else is optional")
+                                                    //TODO: check if its taken before submitting
                                                 }
                                                 return true
                                             })

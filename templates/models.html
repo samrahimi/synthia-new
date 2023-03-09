@@ -12,55 +12,14 @@
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html"><img src="/static/logo_navbar.png" width="140"></a>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item"><a class="nav-link">Chat</a></li>
-                <li class="nav-item"><a class="nav-link">Models</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/static/index.html">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Model Zoo</h1>
+                        <h1 class="mt-4">Synthia Labs - Model Zoo</h1>
                         <p>This is a list of all valid models on the platform... to view details, clone, or update a model, click on it</p>
                         
-                        <!-- Modal -->
-                        <div class="modal fade" id="modelStudioPopup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Model Details</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                                </div>
-                                <div class="modal-body">
-                                ...
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Update</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save As New</button>
-
-                                <button type="button" class="btn btn-primary">Understood</button>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-  
-
-                        <div class="row">
+                        <div class="row justify-content-center">
                         
                             {% for m in models: %}
                             <div class="col-xl-3 col-md-6">
@@ -71,7 +30,7 @@
                                         <small>Created by: {{m["owner"]}}</small>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a  class="small text-white stretched-link" href='/www/models/{{m["model_id"]}}?user_id={{user_id}}'>Open In Studio</a>
+                                        <a  class="small text-white stretched-link" href='/www/edit_model/{{m["model_id"]}}?user_id={{user_id}}'>Open In Studio</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>

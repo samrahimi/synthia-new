@@ -50,7 +50,7 @@ def show_login_screen():
 #we need to enforce the login much better than currently
 @app.route('/www/interactions/<user_id>')
 def interact(user_id):
-  return render_template("chat.html", header_text="Fuck CSS", user=get_viewmodel(user_id))
+  return render_template("chat_bs.html", header_text="Fuck CSS", user=get_viewmodel(user_id))
 
 @app.route('/www/models', methods=["GET"])
 def all_models():
@@ -59,17 +59,40 @@ def all_models():
     model = models.get_model(m)
     del model["_id"]
     all.append(model)
-  return render_template("models.html", models=all)
+  return render_template("models.html", models=all, user_id=request.args.get("user_id"))
 
   return jsonify (all_models)
   #return jsonify(allkeys)
 
-@app.route('/www/models/<model_id>', methods=["GET"])
+@app.route('/www/edit_model/<model_id>', methods=["GET"])
 def model_details(model_id):
   m = models.get_model(model_id)
   del m["_id"]
   return render_template("model_studio.html", model=m, user_id=request.args.get("user_id"))
 
+@app.route('/www/create_model', methods=["GET"])
+def model_create():
+  return render_template("model_studio.html", model={}, user_id=request.args.get("user_id"))
+
+
+@app.route('/model/save', methods=["POST"])
+def save_model():
+  newmodel = {
+    "owner": request.form['owner'],
+    "invocation": request.form["invocation"] if "invocation" in request.form else "",
+    "model_description": request.form["model_description"] if "model_description" in request.form else "",
+    "default_session_context": request.form["default_session_context"] if "default_session_context" in request.form else "",
+    "openai_settings": eval(request.form["openai_settings"]),
+    "training_examples": request.form["examples"] if "examples" in request.form else ""
+  }
+  import connectors.utils as dbutils
+  dbutils.upsert({"model_id": request.form["model_id"]},"chat_models", 
+                       newmodel)
+  from flask import redirect
+  return redirect("/www/interactions/"+request.form["owner"]+"?model_saved=true")
+
+  
+  
 
 @app.route('/models', methods=["GET"])
 def get_models():

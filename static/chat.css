@@ -12,16 +12,21 @@ body {
 	border-radius: 4px;
 	padding:5px;
 	border-color: #46b8da;
+	text-align: left;
   }
   
-  #mybutton {
-	margin-top:50px;
-	text-align: center;
+  #button-bar {
+	position:fixed;
+	bottom: 20px;
+	left:20px;
+	text-align: left;
+	z-index:50000
 }	
 
 .chat-list {
 	float: left;
 	width: 35%;
+	max-width:300px;
 	height: 100%;
 	background-color: #222;
 	color: #eee;

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, Response, send_from_directory, render_template, jsonify, request
 import connectors.session as sessions, connectors.models as models, connectors.users as users, connectors.utils as db
 import json
 import plugins.commands as cmd
@@ -36,9 +36,11 @@ def get_routes():
 
     return jsonify(routes)
 
+
 @app.route("/")
 def redirect_to_splash():
-  return render_template("index.html")
+    return send_from_directory("static", "index.html")
+
 #the following API lets you login, signup, create new sessions with any model, get session state, send a message to gpt, and view the response
 #TODO: clone / edit / create new models, security for logins, buy credits, handle multimodal chains like @@DRAW
 @app.route('/www/login')

@@ -43,7 +43,9 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-lg-6 col-md-8 col-sm-10 col-12">
-                <p><b>If you signed up before March 8th, please sign up again. Sorry for the inconvenience</b></p>
+                {%if login_failed: %}
+                <p><b>If you forgot your password, make a new account. If you signed up before March 8th, please sign up again</b></p>
+                {% endif %}
                 <form>
                     <h2 class="text-center mb-3">Login or Signup</h2>
                     <div class="mb-3">

@@ -2,6 +2,8 @@ from flask import Flask, Response, send_from_directory, render_template, jsonify
 import connectors.session as sessions, connectors.models as models, connectors.users as users, connectors.utils as db
 import json
 import plugins.commands as cmd
+import os
+import uuid
 
 #from connectors.models import get_model, list_models
 #from connectors.users import login, is_logged_in, get_logged_in_user, get_user
@@ -173,6 +175,22 @@ def perform_inference(session_id, message_to_gpt):
   response = the_session.ask_gpt(message = message_to_gpt)
   reply = cmd.parse(response) if response else "error"
   return {"response": reply} 
+
+@app.route('/transcribe', methods=['POST'])
+def transcribe():
+    # save the uploaded file to disk
+    file = request.files['audio']
+
+
+    filename = str(uuid.uuid4()) + '.wav'
+    file.save(os.path.join(os.getcwd()+'/static/audio_in/'+ filename))
+    import openai
+    audio_file= open(os.path.join(os.getcwd()+'/static/audio_in/'+ filename), "rb")
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    print(transcript)
+
+    # return the transcribed text as a JSON response
+    return transcript
 
 #if this all works, I am sincerely surprised :)
 app.run(host='0.0.0.0', port=8080)

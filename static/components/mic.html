@@ -1,0 +1,146 @@
+<style>
+	#record-button.is-recording{
+		color:red !important
+
+	}
+	</style>
+	<a href="#" id="record-button">
+		<i class="fas fa-microphone"></i>
+	</a>
+	
+	<script>
+	let baseState='<i class="fas fa-microphone"></i>'
+	let recordingState=    '<i class="fas fa-stop"></i>'
+	let isRecording = false;
+	let recorder;
+	const uploadTo = '/transcribe';
+	const useServerTranscription = true
+	const triggerPhrase = "hey cynthia"
+	async function listenForTriggerPhrase() {
+		//start listening
+		var recognition = new webkitSpeechRecognition();
+	
+		//set to continuously listen
+		recognition.continuous = true;
+		//listen for the trigger phrase
+		recognition.onresult = function(event) {
+			console.log(JSON.stringify(event.results, null, 2))
+			if (event.results[0][0].transcript.toLowerCase().indexOf(triggerPhrase) > 0) {
+				console.log("Trigger phrase detected")
+				//call the function you need to be called
+				recognition.stop()
+	
+						//We do the transcribeAndRecord call here to avoid overlapping recognizers
+				console.log("Handoff to recording thread")
+	
+				transcribeAndRecord(() => {
+					listenForTriggerPhrase() //Is this a memory leak waiting to happen
+				})
+	
+			}
+		};
+	
+		recognition.onend = () => {
+		}
+	
+	
+		//start listening
+		recognition.start();
+		console.log("Listening for hey synthia")
+	}
+	async function transcribeAndRecord(callbackWhenDone) {
+	  const recognition = new webkitSpeechRecognition();
+	  recognition.interimResults = true;
+	  recognition.continuous = true;
+	
+	  // Start recording
+	  recognition.onstart = () => {
+		console.log('Recording started');
+		toggleRecording()
+	  };
+	
+	  // Listen for user input
+	  recognition.onresult = (event) => {
+		let interimTranscript = '';
+		let finalTranscript = '';
+		for (let i = event.resultIndex; i < event.results.length; i++) {
+		  //const transcript = event.results[i][0].transcript;
+		  if (event.results[i].isFinal) {
+			recognition.stop();
+			console.log('Recording stopped... the transcript is here, but we want to use whisper instead');
+	
+			toggleRecording(); //If this actually fucking works, it recorded a wav file until the user stopped talking
+			callbackWhenDone() //For comparison and as a fallback
+	
+			} 
+		}
+	
+	  };
+	
+	  recognition.onend = () => {
+	  };
+	
+	  recognition.start();
+	}
+	
+	function startRecordingAudio() {
+	  navigator.mediaDevices.getUserMedia({ audio: true })
+		.then(function(stream) {
+		  // create a new recorder instance and start recording
+		  recorder = new MediaRecorder(stream);
+		  recorder.start();
+		})
+		.catch(function(err) {
+		  console.error('Error starting audio recording: ', err);
+		});
+	}
+	
+	function recordingComplete(callback) {
+	  // called when recording is complete
+	  recorder.ondataavailable = function(e) {
+		// create a new FormData object and append the audio data to it
+		const formData = new FormData();
+		formData.append('audio', e.data, 'recording.wav');
+		fetch(uploadTo, {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (callback) {
+				callback(data);
+				}
+			})
+	
+	  };
+	}
+	
+	function toggleRecording() {
+	  if (isRecording) {
+		// stop recording and upload the audio file
+		recorder.stop();
+	
+		
+		recordingComplete((result) => {$("textarea").val(result.text); sendMessage()})
+		isRecording = false;
+		$("#record-button").removeClass("is-recording").html(baseState);
+	  } else {
+		// start recording
+		startRecordingAudio();
+		isRecording = true;
+		$("#record-button").addClass("is-recording").html(recordingState);
+	  }
+	}
+	
+	// attach event handler to record button
+    $(document).ready(function () {
+		$("#record-button").on("click", (e) => {
+			console.log("clicked:")
+			toggleRecording()
+		})
+	
+
+	})
+	// try our little hey cynthia thingy just for fun
+	//listenForTriggerPhrase()
+	</script>

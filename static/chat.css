@@ -1,11 +1,4 @@
 /* wow... chatgpt can't figure out the frameworks but if you let it make you its own framework from scratch, you get professional output */
-html,
-body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	font-family: sans-serif;
-}
 .spawn, .spawn i{
 	background-color : #31B0D5;
 	color: white;
@@ -16,7 +9,7 @@ body {
   }
   
   #button-bar {
-	position:fixed;
+	position:absolute;
 	bottom: 20px;
 	left:20px;
 	text-align: left;
@@ -24,15 +17,16 @@ body {
 }	
 
 .chat-list {
-	float: left;
-	width: 35%;
+	width: 300px;
 	max-width:300px;
-	height: 100%;
+	min-width:300px;
+	height: calc(100vh - 52px) !important;
 	background-color: #222;
 	color: #eee;
 	padding: 20px;
 	box-sizing: border-box;
 	overflow-y: auto;
+	position:fixed;
 }
 
 .chat-list ul {
@@ -68,27 +62,28 @@ body {
 }
 
 .chat-list .title {
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: bold;
+	color:white !important;
 }
 
 .chat-list .time {
-	font-size: 12px;
-	color: #aaa;
+	font-size: 13px;
+	color: #ccc;
 	display: block;
 }
 
 .chat-window {
-	float: left;
-	width: 65%;
-	height: 100%;
+	width: calc(100% - 300px);
+	height: calc(100vh - 56px);
+	left:300px;
 	background-color: #eee;
 	position: relative;
 	box-sizing: border-box;
 }
 
 .chat-messages {
-	height: calc(100% - 60px);
+	height: calc(100vh - 100px);
 	padding: 20px;
 	box-sizing: border-box;
 	overflow-y: auto;
@@ -100,7 +95,6 @@ body {
   padding:10px;
   width:60%; float:left;
   border-radius: 5px;
-  color:white;
 }
 
 .message.from, sent-by {
@@ -136,7 +130,6 @@ body {
 	font-size: 16px;
 }
 .text-entry {
-	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 100%;
@@ -152,21 +145,31 @@ body {
 	resize: none;
 	padding: 10px;
 	box-sizing: border-box;
-	border: none;
 	border-radius: 5px;
 	font-family: sans-serif;
 }
-
+#mic-toggle{
+	font-size: 2em; position:absolute; right:40px; bottom:20px; z-index:100000
+}
 
 /* Media query for smaller screens */
-@media (max-width: 450px) {
+@media (max-width: 768px) {
 	.chat-list {
 		width: 100%;
-		float: none;
+		max-width:none;
+		min-width:300px;
+	}
+
+	#mic-toggle, #mic-toggle #record-button {
+		color: white
+	}
+
+	#mic-toggle {
+		position:fixed !important;
 	}
 	
 	.chat-window {
 		width: 100%;
-		float: none;
+		display:none;
 	}
 }

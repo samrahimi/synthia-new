@@ -31,7 +31,10 @@ const http_get = (endpoint, response_handler) => {
 
     //$.getJSON(endpoint, response_handler)
 }
-
+function getComponent(container, componentUrl, callback) {
+    $(container).load(componentUrl, callback)
+}
+function qs(key) { const queryString = window.location.search; const urlParams = new URLSearchParams(queryString); return urlParams.get(key); }
 const isloggedin = () => {
     return localStorage.getItem("logged_in_user") !==null
 }
@@ -86,9 +89,9 @@ function login() {
             if (window.location.href != window.parent.location.href)
                 //who fucking cares window.parent.setUid(result.user_id)
                 console.log("Running in an iframe. If your container needs to be notified, do it here")
-            localStorage["logged_in_user"] = JSON.stringify(result)
-            console.log("persisting user in localstorage, login success")
-            location.href = "/www/interactions/"+result.user_id
+                localStorage["logged_in_user"] = JSON.stringify(result)
+                console.log("persisting user in localstorage, login success")
+                location.href = "/www/interactions/"+result.user_id
             }
 
         }

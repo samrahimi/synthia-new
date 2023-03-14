@@ -171,5 +171,6 @@
 	.chat-window {
 		width: 100%;
 		display:none;
+		left:0ps !important
 	}
 }

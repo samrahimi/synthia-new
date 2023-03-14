@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>Chat App</title>
@@ -8,28 +9,33 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-</head>    
+</head>
 
-<body >
+<body>
 	<style>
-
-.center-container {
-  position: relative;
-}
-
-.absolute-center {
-  width: 50%;
-  height: 80%;
-  overflow: auto;
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-}
-
-		my-name, ai-name, model-id {
-			display:inline;
-			font-weight:bold
+		.center-container {
+			position: relative;
 		}
+
+		.absolute-center {
+			width: 65%;
+			height: 60%;
+			overflow: auto;
+			margin: auto;
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+
+		my-name,
+		ai-name,
+		model-id {
+			display: inline;
+			font-weight: bold
+		}
+
 		.intro-state {
 			background-color: white;
 			padding: 10px;
@@ -37,206 +43,179 @@
 			font-size: 14px;
 		}
 
-/* Style inputs with type="text", select elements and textareas */
-input[type=text], select {
-  width: 100%; /* Full width */
-  padding: 12px; /* Some padding */ 
-  border: 1px solid #ccc; /* Gray border */
-  border-radius: 4px; /* Rounded borders */
-  box-sizing: border-box; /* Make sure that padding and width stays in place */
-  margin-top: 6px; /* Add a top margin */
-  margin-bottom: 16px; /* Bottom margin */
-  resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
-}
-
-/* Style the submit button with a specific background color etc */
-input[type=submit] {
-  background-color: #04AA6D;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-/* When moving the mouse over the submit button, add a darker green color */
-input[type=submit]:hover {
-  background-color: #45a049;
-}
-
-/* Add a background color and some padding around the form */
-.container-popup {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
+		/* Style inputs with type="text", select elements and textareas */
+		input[type=text],
+		select {
+			width: 100%;
+			/* Full width */
+			padding: 12px;
+			/* Some padding */
+			border: 1px solid #ccc;
+			/* Gray border */
+			border-radius: 4px;
+			/* Rounded borders */
+			box-sizing: border-box;
+			/* Make sure that padding and width stays in place */
+			margin-top: 6px;
+			/* Add a top margin */
+			margin-bottom: 16px;
+			/* Bottom margin */
+			resize: vertical
+				/* Allow the user to vertically resize the textarea (not horizontally) */
+		}
 
 
-		
+		/* Add a background color and some padding around the form */
+		.container-popup {
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			padding: 20px;
+			border: solid 1px
+		}
 	</style>
 	<div style="display:none; z-index:9999" id="popup" class="absolute-center">
 		<div class="container-popup">
 			<div style="position:relative">
-			<!-- This field is the only one that's required
+				<!-- This field is the only one that's required
 				  from what I know, you always need a MOM no matter what -->
-				  
-			<h2>New Session</h2>
-			<p> 
-			</p>
-			<label for="model_id">Model</label>
-			
-		 
-			
-			<select id="model_id" name="model_id">
-			</select>
-			
-			<input type="hidden" id="user_id" name="user_id" value="{{user.user_id}}" />
-			
-					
-		
-			<label for="ai_name">Bot's Name</label>
-			<input type="text" id="ai_name" name="ai_name" value="">
-		
-			<label for="user_name">Your Name</label>
-			<input type="text" id="user_name" name="user_name" value="{{user.user_id}}">
-			
-			<input type="button" id="do_spawn"  value="Spawn!" />
+
+				<h2>New Session</h2>
+				<p>
+					All fields are required
+				</p>
+				<label for="model_id">Model</label>
+
+
+
+				<select id="model_id" name="model_id">
+				</select>
+
+				<input type="hidden" id="user_id" name="user_id" value="{{user.user_id}}" />
+
+
+
+				<label for="ai_name">Bot's Name</label>
+				<input type="text" id="ai_name" name="ai_name" value="AI">
+
+				<label for="user_name">Your Name</label>
+				<input type="text" id="user_name" name="user_name" value="{{user.user_id}}">
+
+				<a class="button is-link" id="do_spawn">Spawn Bot</a><a id="do_cancel" class="button is-light">Cancel</a>
 			</div>
 		</div>
-		
+
 	</div>
 
 	<section>
-		  
- <div class="container">		
-	<nav class="navbar" role="navigation" aria-label="main navigation">
-		<div class="navbar-brand">
-		  <a class="navbar-item" href="#">
-			<img src="/static/synthia.png" width="36" height="36">
-			Synthia Labs
-		  </a>
-	  
-		  <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-			<span aria-hidden="true"></span>
-			<span aria-hidden="true"></span>
-			<span aria-hidden="true"></span>
-		  </a>
-		</div>
-	  
-		<div id="navbarBasicExample" class="navbar-menu">
-		  <div class="navbar-start">
-			<a class="navbar-item">
-			  Home
-			</a>
-	  
-			<a class="navbar-item">
-			  Documentation
-			</a>
-	  
-			<div class="navbar-item has-dropdown is-hoverable">
-			  <a class="navbar-link">
-				More
-			  </a>
-	  
-			  <div class="navbar-dropdown">
-				<a class="navbar-item">
-				  Jobs @ Synthia
-				</a>
-				<a class="navbar-item">
-				  ICO
-				</a>
-				<a class="navbar-item">
-				  Contact
-				</a>
-				<a class="navbar-item">
-					Free Arctic Wolf!
-				  </a>
-  
-				<hr class="navbar-divider">
-				<a class="navbar-item">
-				  Bug Reports
-				</a>
-			  </div>
+		<div class="container">
+			<nav class="navbar" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="menu-toggle navbar-item is-5" href="#">
+						<img src="/static/logo-transparent.png" height="28">
+					</a>
+					<div class="navbar-end">
+						<div class="navbar-item">
+							<div class="buttons">
+								<a id="spawn" href="#" class="button is-primary">
+									<strong>Create Bot</strong>
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div id="navbarBasicExample" class="navbar-menu">
+					<div class="navbar-start">
+						<a class="navbar-item">
+							Home
+						</a>
+
+						<a class="navbar-item">
+							Synthia U.
+						</a>
+
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								More
+							</a>
+
+							<div class="navbar-dropdown" style="opacity:0.7 !important">
+								<a class="navbar-item">
+									Jobs @ Synthia
+								</a>
+								<a class="navbar-item">
+									ICO
+								</a>
+								<a class="navbar-item">
+									Contact
+								</a>
+								<a class="navbar-item">
+									Free Arctic Wolf!
+								</a>
+
+								<hr class="navbar-divider">
+								<a class="navbar-item">
+									Bug Reports
+								</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</nav>
+
+			<div class="chat-list">
+
+
+
+				<ul style="height:calc(100% - 100px) !important; padding-bottom:50px; overflow: hidden">
+					<!-- The user's sessions AKA the model'simportant instances -->
+				</ul>
+
+				<!-- Floating action button bottom left, pops dialog-->
+
+
 			</div>
-		  </div>
-	  
-		  <div class="navbar-end">
-			<div class="navbar-item is-hidden">
-			  <div class="buttons">
-				<a class="button is-primary">
-				  <strong>Sign up</strong>
-				</a>
-				<a class="button is-light">
-				  Log in
-				</a>
-			  </div>
+			<div class="chat-window">
+
+
+				<div id="chat-messages" style="height:calc(100% - 100px); overflow:auto">
+
+				</div>
+				<div class="text-entry">
+					<textarea id="query-box" placeholder="Type your message..."></textarea>
+				</div>
 			</div>
-		  </div>
-		</div>
-	  </nav>		
-  
-	<div class="chat-list">
-		<ul>
-			<!-- The user's sessions AKA the model's instances -->
-		</ul>
-		
-		<!-- Floating action button bottom left, pops dialog-->
-		<div id="button-bar">
-			<button href="#" id="spawn" style="font-size:16px; font-weight:bold; display:block; width:200px; border-radius:5px; margin:10px" class="spawn">
-				<i class="fa fa-plus" aria-hidden="true"></i>
-				Spawn Bot</button>
-			
-			<button href="#" id="models" style="font-size:16px; font-weight:bold; display:block; width:200px; border-radius:5px;margin:10px" class="spawn">
-					<i class="fa fa-plus" aria-hidden="true"></i>
-					Browse Models</button>
+			<div id="mic-toggle"></div>
 
-			<button href="/www/models/create?user_id={{user.user_id}}" id="create-model" style="font-size:16px; font-weight:bold; display:block; width:200px; border-radius:5px;margin:10px" class="spawn">
-					<i class="fa fa-plus" aria-hidden="true"></i>
-						New Model</button>
-	
-	
-		</div>
-	</div>
-	<div class="chat-window">
-
-
-		<div id="chat-messages" style="height:calc(100% - 100px); overflow:auto">
-	
-		</div>
-		<div class="text-entry">
-			<textarea id="query-box" placeholder="Type your message..."></textarea>
-		</div>
-	</div>
-	<style>
-	</style>
-	<div id="mic-toggle"></div>
-</div>
-</section>
+	</section>
 	<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
-    <!-- Session state and login JS-->
-    <script src="/static/core.js"></script>
+	<!-- Session state and login JS-->
+	<script src="/static/core.js"></script>
 	<script src="/static/chat.js"></script>
-    <script>
-	//I am slowly moving towards a Vue or Svelte type architecture of single file components... slowly
-	$(document).ready(() => {
-		getComponent("#mic-toggle", "/static/components/mic.html", () => {console.log("microphone loaded")})
+	<script>
+		//I am slowly moving towards a Vue or Svelte type architecture of single file components... slowly
+		$(document).ready(() => {
+			getComponent("#mic-toggle", "/static/components/mic.html", () => { console.log("microphone loaded") })
 
-	})
+		})
 
 
 
-	$(document).ready(function() {
+		$(document).ready(function () {
 
-		// Check for click events on the navbar burger icon
-		$(".navbar-burger").click(function() {
+			// Check for click events on the navbar burger icon
+			$(".menu-toggle").click(function () {
 
-			// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-			$(".navbar-burger").toggleClass("is-active");
-			$(".navbar-menu").toggleClass("is-active");
+				// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+				//$(".navbar-burger").toggleClass("is-active");
+				$(".navbar-menu").toggleClass("is-active");
 
+			});
 		});
-	});
-    </script>
+	</script>
 
 </body>
+
 </html>

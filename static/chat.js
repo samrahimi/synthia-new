@@ -6,11 +6,11 @@ const getModels = (cb) => {
     $.get("/models", (model_ids) => {
         window.model_zoo = []
         model_ids.forEach(async(m) => {
-            var fullmodel = await fetch("/models/"+m)
-            window.model_zoo.push(fullmodel)
-            $("#model_id").append("<option value='"+m+"'>"+m+"</option>")
-            if (typeof cb ==="function")
-                cb(window.model_zoo)
+            if (m && m.length > 0) {
+                var fullmodel = await fetch("/models/"+m)
+                window.model_zoo.push(fullmodel)
+                $("#model_id").append("<option value='"+m+"'>"+m+"</option>")
+            }
         })
     })
 }
@@ -25,18 +25,29 @@ const populateSessions = (activeSessionId) => {
     $(".chat-list ul").html("")
     sessions.forEach(session => { 
         session_li_template = `
-        <li id="${session.SESSION_ID}" 
-        class="session ${session.SESSION_ID == window.state_dick.active_session ? "active ": ""}" onclick="javascript:populateMessages('${session.SESSION_ID}');return false">
+        <li>
+        <a href="#" id="${session.SESSION_ID}"  sessionid="${session.SESSION_ID}" 
+        class='session ${session.SESSION_ID == window.state_dick.active_session ? "active ": " "}'>
             <span class="icon"><img class="avatar_sm" src="/static/synthia.png" /></span>
             <span class="title">${session.ai_name}</span>
             <span class="time">Spawned From: ${session.model_id}</span>
-        </li>`
+        </a></li>`
         $(".chat-list ul").append(session_li_template)
 
     })
-    console.log("attempt download models")
-    getModels()
+
+    document.querySelectorAll(".session").forEach((element) => element.addEventListener("click", (e) => { 
+        const sid = element.attributes["sessionid"]
+        toggleChatViewOnPhone()
+        populateMessages(sid.value)
+        console.log("attempt download models")
+        getModels()
+    
+        e.preventDefault()
+
+    }))
 }
+
 
 const populateMessages = (sessionId) =>{
     var sessions = window.state_dick.user.active_sessions
@@ -47,8 +58,7 @@ const populateMessages = (sessionId) =>{
 
     $("#chat-messages").html("")
     
-    $("#chat-messages").append(`<p style="margin-left:10px">Session ID: ${session.SESSION_ID}. Context: chatting with ${session.ai_name}. Spawned from: <a href="/www/models/edit_model/${session.model_id}?user_id={{user.user_id}}">${session.model_id}</a></p>`)
-    $("#chat-messages").append(`<p style="margin-left:10px">***BETA UPDATE*** Custom models are here!!! Create your own models, <a href="/models/create_model?user_id={{user.user_id}}">from scratch</a> or by customizing one of the <a href="/www/models?user_id={{user.user_id}}">existing models</a></p>`)
+    $("#chat-messages").append(`<p style="margin-left:10px">Unique ID: ${session.SESSION_ID}. Given Name: ${session.ai_name}. Model: <a href="/www/models/edit_model/${session.model_id}?user_id={{user.user_id}}">${session.model_id}</a></p>`)
     if (session.useChatModel) {
         //Different schema than the Synthia protocol. 
         //TODO: update Synthia conversation schema to match the chat models
@@ -135,6 +145,28 @@ const sendMessage=() =>		{
         
         }
 
+//on a phone a media query hides chat column and shows listvew column by default
+//so if one col is invisible we know that we need to run this when switching views
+const toggleChatViewOnPhone= () =>{
+if (!$(".chat-window").is("visible")) {
+    $(".chat-window").css("left", "0px").css("margin-left", "0px").show()
+    $(".chat-list").hide()
+    $("#record-button").removeClass("white").addClass("black")
+    $(".breadcrumb ul li").removeClass("is-active").append('<li class="is-active"><a href="#" aria-current="page">Chat</a></li>')
+
+    return true
+}
+
+if (!$(".chat-list").is("visible")) {
+    $(".chat-window").hide()
+    $(".chat-list").show()
+    $("#record-button").removeClass("black").addClass("white")
+    $(".breadcrumb ul li").last().removeClass("is-active").append('<li class="is-active"><a href="#" aria-current="page">Chat</a></li>')
+
+    return true
+}
+}
+
 $(document).ready(function () {
     $("#spawn").on("click", (e) => {
         $("#popup").show()
@@ -149,6 +181,9 @@ $(document).ready(function () {
         location.href="/www/create_model?user_id="+$("#user_id").val()
         e.preventDefault
 
+    })
+    $("#do_cancel").on("click", () => {
+        $("#popup").hide()
     })
     $("#do_spawn").on("click", () => {
         http_post("/sessions/spawn", {"user_id":$("#user_id").val(), "model_id":$("#model_id").val(), "user_name": $("#user_name").val(), "ai_name": $("#ai_name").val()}, 

@@ -148,7 +148,7 @@ const sendMessage=() =>		{
 //on a phone a media query hides chat column and shows listvew column by default
 //so if one col is invisible we know that we need to run this when switching views
 const toggleChatViewOnPhone= () =>{
-if (!$(".chat-window").is("visible")) {
+if (!$(".chat-window").is(":visible")) {
     $(".chat-window").css("left", "0px").css("margin-left", "0px").show()
     $(".chat-list").hide()
     $("#record-button").removeClass("white").addClass("black")
@@ -157,7 +157,7 @@ if (!$(".chat-window").is("visible")) {
     return true
 }
 
-if (!$(".chat-list").is("visible")) {
+if (!$(".chat-list").is(":visible")) {
     $(".chat-window").hide()
     $(".chat-list").show()
     $("#record-button").removeClass("black").addClass("white")

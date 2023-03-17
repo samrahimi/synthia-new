@@ -113,21 +113,26 @@ def get_model(model_id):
 def signup():
   data = json.loads(request.get_data(as_text=True))
   u = users.signup(user_id=data["user_id"], name=data["name"], access_level="trial", email=data["email"], password=data["password"])
-  if u is not None:
+  if u:
     return users.serialize_user(u)
   else:
-    return {"error":"user already exists or an error occured, pls retry"}
+    return "error"
   
 
 @app.route('/users/login', methods=["POST"])
 def do_login():
+  from flask import session, redirect
   data = json.loads(request.get_data(as_text=True))
 
   u = users.login(data["user_id"], data["password"])
+ 
   if u:
-    return users.serialize_user(u)
+    
+    s= users.serialize_user(u)
+    session["user"]=s
+    return s
   else:
-   return {"error":"incorrect user id or password"}
+   return None
 
 @app.route('/sessions/spawn', methods=["POST"])
 def create_session():
@@ -193,5 +198,7 @@ def transcribe():
     return transcript
 
 #if this all works, I am sincerely surprised :)
+
+app.config["SECRET_KEY"]="hamster"
 app.run(host='0.0.0.0', port=8080)
 

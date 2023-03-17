@@ -57,10 +57,9 @@ const refreshCurrentUser = (hand_off_to) => {
     }
 }
 
-$(".btn-login").on("click", (e) => {
+$("form").on("submit", (e) => {
     login()
-
-    e.preventDefault()
+    return false
 })
 
 $(".btn-signup").on("click", (e) => {
@@ -80,18 +79,15 @@ function refreshLogin(uid, callback) {
 function login() {
     $("input").attr("disabled", "disabled")
     http_post("/users/login", { "user_id": $("#username").val(), "password": $("#password").val() },
-        (result) => {
-            if (result["error"]) {
-                $(".error").html(result["error"])
+        function (result) {
+            if (!result || typeof result === 'underfined') {
+                $(".error").show()
                 $("input").removeAttr("disabled")
             }
             else {
-            if (window.location.href != window.parent.location.href)
-                //who fucking cares window.parent.setUid(result.user_id)
-                console.log("Running in an iframe. If your container needs to be notified, do it here")
-                localStorage["logged_in_user"] = JSON.stringify(result)
+                localStorage["logged_in_user"] = result.user_id
                 console.log("persisting user in localstorage, login success")
-                location.href = "/www/interactions/"+result.user_id
+                location.href = "/www/interactions/" + result.user_id
             }
 
         }

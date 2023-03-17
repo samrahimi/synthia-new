@@ -20,31 +20,43 @@
                 <main>
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-lg-10">
+                            <div class="col-8">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header">
                                     <h3 class="text-center font-weight-light my-4">Synthia Labs - AI Genetics Studio</h3>
-                                    If this is not your model, you can remix it by choosing a new model id and saving your changes. 
+                                    {{"We have cloned the model "+model["model_id"]+" and given you a temporary model id. Please feel to free to change it" if user_id == model["owner"] else ""}}
+                                    We have one rule at Synthia. Be honest. If your model spawns evil misanthropes, then call it text-misanthrope-420, not bambi-image-generator. 
+                                    NSFW must be declared if that is the model's primary purpose, and the description is mandatory and must be accurate. Violation of the rules 
+                                    will result in your model being correctly filed and sent to the bottom of the listings. No scams. No malware. Have fun! 
                                 </div>
                                     <div class="card-body">
+                                        <ul>
+                                            <li>Keep the text as brief as possible, because the bigger the model, the more money it costs to send a query and the less room there is for a reply</li>
+                                            <li>Model IDs must not contain spaces or anything besides letters, numbers, _ and -</li>
+                                            <li>All openai text completions models may be used. However, the gpt 3.5 turbo and gpt4 chat models are not yet integrated. Give us a week</li>
+                                            <li>If there is NO NEED to maintain the history of conversation, chose "Prompt" as the category. This causes the conversation history to reset to freshly spawned after each query - so all the 
+                                                underlying model sees is the static part of the model defined on this screen, and the user's query - nothing before that
+                                            </li>
+                                            <li>If the goal is to maintain verbatim transcripts only, choose "ChatGPT" as the behavior. Otherwise, we suggest using "Extended Context Chat" which compresses older messages using 
+                                                another GPT to allow for longer memory at the cost of losing some verbatim recall. 
+                                            </li>
+                                            <li>Be careful with the quotes and brackets in the openai settings. If you mess up, your model will not function</li>
+                                            <li>Finally, if you want to teach your model how to DRAW, create photos, etc, refer to the super_g skills for an example. Otherwise, you can train that command in the chat after spawning</li>
+                                        </ul>
                                         <form action="/model/save" method="POST">
                                             <input type="hidden" id="user_id" name="user_id" value="{{user_id}}" />
                                             <input type="hidden" id="owner" name="owner" value='{{model["owner"]}}' />
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        <small></small>
-                                                        <input name="model_id" class="form-control" value='{{model["model_id"] if ("model_id" in model and user_id==model["owner"]) else ""}}' id="model_id" type="text" placeholder="Like a user ID, for a model" />
+                                                    <div class="form-floating mb-3">
+                                                    <small></small>
+                                                    {% if model %}
+                                                        <input name="model_id" class="form-control" value='{{model["model_id"] if (user_id==model["owner"] or user_role == "admin") else model["model_id"]+"_copy"}}' id="model_id" type="text" placeholder="Like a user ID, for a model" />
+                                                    {% endif %}
                                                         <label for="model_id">Model ID</label>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-floating">
-                                                        <input class="form-control" name="model_description" value='{{model["model_description"]}}' id="model_description" type="text" placeholder="Brief Use Case" />
+                                                    <div class="form-floating mb-3">
+                                                        <textarea class="form-control" name="model_description" placeholder="Describe the model. What it does well, what it does badly, how it differs from other similar models">{{model["model_description"]}}</textarea> 
                                                         <label for="model_description">Descriptive Name</label>
                                                     </div>
-                                                </div>
-                                            </div>
 
                                             <div class="form-floating mb-3">
                                                 <textarea class="form-control" id="invocation" name="invocation">{{model["invocation"]}}</textarea> 
@@ -98,9 +110,10 @@
                                                     //$("#allow_update").val("False")
 
                                                 }
-                                                if ($("#model_id").val() == "")
+                                                if ($("#model_id").val() == "" || $("#openai_settings").val() == "")
                                                 { 
                                                     alert("Model ID and openai settings are required, everything else is optional")
+                                                    return false;
                                                     //TODO: check if its taken before submitting
                                                 }
                                                 return true

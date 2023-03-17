@@ -77,13 +77,22 @@ def login(user_id, password, first_time=False):
   if not user or (user["password"] != password):
     return False
   else:
-    if first_time:
-      starter_session = Session(model_id='super_gpt',
+    #give new users a variety of bots to talk to
+    if first_time:  
+      for n in [  
+        ['Super GPT', 
+        "super_gpt"], 
+        ["Hates Humans", 
+        'text-misanthrope-001'], 
+        ['Donny 2024','text-political-maga-001'], 
+        ['4 More Years', 'text-political-maga-001'],
+                ]:
+        starter_session = Session(model_id=n[0],
                                 user_id=user_id,
                                 user_name=user["name"],
-                                ai_name="Super GPT")
-      starter_session.context += "\n\nNOTE: %USER_NAME% just signed up for Synthia, so Please give him the appropriate congratulations when you reply to their first message!\n\n"
-      starter_session.save()
+                                ai_name=n[1])
+        starter_session.context += "\n\nNOTE: %USER_NAME% just signed up for Synthia, so Please give him the appropriate congratulations when you reply to their first message!\n\n"
+        starter_session.save()
 
     user_sessions = load_state(user_id) 
     #Sessions automatically get added to the sessions["by_user"] dict when the constructor is called, so we can now simply compose a user object that's actually userful and send it back to whoever feels like stringifying the sessions list...

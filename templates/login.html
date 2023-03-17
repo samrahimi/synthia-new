@@ -13,13 +13,14 @@
     <style>
         body {
             background-color: #f5f5f5;
+            background-color:darkslategray;
         }
 
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
         }
 
         form label {
@@ -41,15 +42,21 @@
         }
     </style>
     <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
                 {%if login_failed: %}
-                <p><b>If you forgot your password, make a new account. If you signed up before March 8th, please sign up again</b></p>
+                <p><b>
+                    If you forgot your password, make a new account. Note that old accounts may have been deleted because it was an early beta. <br />
+                    Bots: login procedures have changed - the server will redirect you upon logging in. <br />
+                    Users: congratulations! One of you can be the proud owner of an extremely friendly, but extremely ADHD Arctic Wolf
+                </b></p>
                 {% endif %}
-                <form>
-                    <h2 class="text-center mb-3">Login or Signup</h2>
+                <form action="/create_session" method="POST">
+                    <img src="/static/logo-transparent.png" width="100%" />
+
+                    <h2 class="text-center mb-3">Sign In Here</h2>
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Username (Not Your Email)</label>
                         <input type="text" class="form-control" id="username" placeholder="Enter your username">
                     </div>
                     <div class="mb-3">
@@ -58,12 +65,15 @@
                     </div>
 
 
-                    <button type="button" class="btn btn-primary btn-login w-100">Login</button>
-                    <div class="mt-2 text-center">or</div>
-                    <button type="button" class="btn btn-primary btn-signup w-100">Signup</button>
+                    <input type="submit" class="btn btn-primary w-100" value="Log In" />
+                    <p class="text-center" style="display:none;font-weight:bold; font-size:14px; color:red" class="error">Incorrect Username or Password. Try again.</p>
+
+                    <div class="mt-4 pt-5 text-center"><h3>Need An Account?</h3></div>
+                    <button type="button" class="btn btn-warning w-100">Register</button>
+
+                    <div class="mt4 pt-5 text center"><p>Welcome to Synthia Beta...</p><P> Note that voice features on Ubuntu Linux may be limited, use a phone instead. 
+                        Turn up the sound, hit the button to talk, and say hello.<p> If you have any questions at all, please email support,  synthialabs88@gmail.com</p></div>
                 </form>
-                <p class="text-center" style="font-weight:bold; color:red" class="error"></p>
-                <p>We are in early beta and missing some UI stuff from this form, but it actually works! Thank you for using Synthia</p>
             </div>
         </div>
     </div>

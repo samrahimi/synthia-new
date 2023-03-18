@@ -48,10 +48,9 @@
                 <p><b>
                     If you forgot your password, make a new account. Note that old accounts may have been deleted because it was an early beta. <br />
                     Bots: login procedures have changed - the server will redirect you upon logging in. <br />
-                    Users: congratulations! One of you can be the proud owner of an extremely friendly, but extremely ADHD Arctic Wolf
                 </b></p>
                 {% endif %}
-                <form action="/create_session" method="POST">
+                <form autocomplete="off" action="/create_session" class="login" method="POST">
                     <img src="/static/logo-transparent.png" width="100%" />
 
                     <h2 class="text-center mb-3">Sign In Here</h2>
@@ -69,7 +68,7 @@
                     <p class="text-center" style="display:none;font-weight:bold; font-size:14px; color:red" class="error">Incorrect Username or Password. Try again.</p>
 
                     <div class="mt-4 pt-5 text-center"><h3>Need An Account?</h3></div>
-                    <button type="button" class="btn btn-warning w-100">Register</button>
+                    <a href="/www/signup" class="btn btn-warning w-100">Register</a>
 
                     <div class="mt4 pt-5 text center"><p>Welcome to Synthia Beta...</p><P> Note that voice features on Ubuntu Linux may be limited, use a phone instead. 
                         Turn up the sound, hit the button to talk, and say hello.<p> If you have any questions at all, please email support,  synthialabs88@gmail.com</p></div>

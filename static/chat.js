@@ -25,23 +25,29 @@ const populateSessions = (activeSessionId) => {
     $(".chat-list ul").html("")
     sessions.forEach(session => { 
         session_li_template = `
-        <li>
-        <a href="#" id="${session.SESSION_ID}"  sessionid="${session.SESSION_ID}" 
-        class='session ${session.SESSION_ID == window.state_dick.active_session ? "active ": " "}'>
-            <span class="icon"><img class="avatar_sm" src="/static/synthia.png" /></span>
-            <span class="title">${session.ai_name}</span>
-            <span class="time">Spawned From: ${session.model_id}</span>
-        </a></li>`
-        $(".chat-list ul").append(session_li_template)
+        <div class="chat-item">
+            <a style="color:white" 
+              class="session ${session.SESSION_ID == window.state_dick.active_session ? 'active':''}" 
+            " sessionid="${session.SESSION_ID}" id="${session.SESSION_ID}"  href="#">
+            <div class="icon_text"></div>
+            <div class="title">${session.ai_name}</div>
+            <div class="numbr"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp; <i class="fa fa-share-alt"></i> </div>
+            <div class="subtext">AI: ${session.model_id}</div>
+            </a>
+        </div>				
+
+      `
+        $("#conversations").append(session_li_template)
 
     })
+    console.log("attempt download models")
+    getModels()
+
 
     document.querySelectorAll(".session").forEach((element) => element.addEventListener("click", (e) => { 
         const sid = element.attributes["sessionid"]
         toggleChatViewOnPhone()
         populateMessages(sid.value)
-        console.log("attempt download models")
-        getModels()
     
         e.preventDefault()
 

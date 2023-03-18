@@ -288,6 +288,28 @@ class Session:
     prompt = prompt_context + f"{self.user_name}: {message}\n{self.ai_name}:"
     response = self.gpt.query(prompt)
 
+    #save to db so that we can restore when the consolidator nukes them from the context
+    dbutil.upsert({"message_id": str(uuid1())}, "messages", {
+      "role": "user",
+      "name": self.user_name,
+      "session_id": self.SESSION_ID,
+      "content": message,
+      "synthia_model": self.model_id,
+      "base_model": self.settings["model"]
+    })
+
+    #save to db so that we can restore when the consolidator nukes them from the context
+    dbutil.upsert({"message_id": str(uuid1())}, "messages", {
+      "role": "assistant",
+      "name": self.user_name,
+      "session_id": self.SESSION_ID,
+      "content": response,
+      "synthia_model": self.model_id,
+      "base_model": self.settings["model"]
+    })
+
+
+
     #by default update_state is enabled... this simply adds the query and reply to the ongoing conversational context
     #however if we're requesting something where the response need to be retaines, set it as False and avoid wasting tokens
     if update_state:

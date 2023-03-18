@@ -18,8 +18,8 @@
 		}
 
 		.absolute-center {
-			width: 65%;
-			height: 60%;
+			width: 70%;
+			height: 70%;
 			overflow: auto;
 			margin: auto;
 			position: absolute;
@@ -69,8 +69,8 @@
 		.container-popup {
 			border-radius: 5px;
 			background-color: #f2f2f2;
-			padding: 20px;
-			border: solid 1px
+			padding: 10px;
+			border: solid 1px black
 		}
 	</style>
 	<div style="display:none; z-index:9999" id="popup" class="absolute-center">
@@ -98,7 +98,7 @@
 				<input type="text" id="ai_name" name="ai_name" value="AI">
 
 				<label for="user_name">Your Name</label>
-				<input type="text" id="user_name" name="user_name" value="{{user.user_id}}">
+				<input type="text" disabled="disabled" id="user_name" name="user_name" value="{{user.user_id}}">
 
 				<a class="button is-link" id="do_spawn">Spawn Bot</a><a id="do_cancel" class="button is-light">Cancel</a>
 			</div>
@@ -113,16 +113,6 @@
 					<a class="menu-toggle navbar-item is-5" href="#">
 						<img src="/static/logo-transparent.png" height="28">
 					</a>
-					<div class="navbar-end">
-						<div class="navbar-item">
-							<div class="buttons">
-								<a id="spawn" href="#" class="button is-primary">
-									<strong>Create Bot</strong>
-								</a>
-							</div>
-						</div>
-					</div>
-
 				</div>
 
 				<div id="navbarBasicExample" class="navbar-menu">
@@ -163,13 +153,83 @@
 					</div>
 
 				</div>
+
 			</nav>
 
 			<div class="chat-list">
+				<style>
+					.chat-item {
+						position: relative;
+						height: 60px;
+						padding: 10px;
+						border-bottom: 1px solid rgb(204, 204, 204);
+					}
+				   .chat-item .icon_text {
+						position: absolute;
+						top: 0px;
+						left: 0px;
+						width: 50px;
+						height: 50px;
+						line-height: 50px;
+						text-align: center;
+						font-family: FontAwesome;
+						font-size: 22px;
+					}
+				 .chat-item .title {
+						position: absolute;
+						top: 0px;
+						left: 50px;
+						right: 50px;
+						height: 50px;
+						line-height: 50px;
+						font-family: ColfaxAI, helvetica, sans-serif;
+						font-size: 16px;
+						font-weight: bold;
+					}
+					.chat-item .numbr {
+						position: absolute;
+						top: 0px;
+						right: 0px;
+						width: 60px;
+						height: 50px;
+						line-height: 50px;
+						text-align: center;
+						font-family: ColfaxAI, helvetica, sans-serif;
+						font-size: 18px;
+					}
+				   .chat-item .subtext {
+						position: absolute;
+						top: 30px;
+						left: 50px;
+						right: 50px;
+						height: 25px;
+						line-height: 25px;
+						font-family: ColfaxAI, helvetica, sans-serif;
+						font-size: 14px;
+					} 
+				
+					#conversations {
+						height: 60vh !important;
+						overflow:auto;
+					}
+
+					#action_items {
+
+					}
+				
+				</style>
+				
+				<div id="conversations">
+				</div>
+
+				<div style="border-top:solid 3px white; margin-top:50px">
+					<a id="spawn" href="#" class="button is-primary" style="margin-top:10px;width:100%">
+						<strong>Create Bot</strong>
+					</a>
+				</div>
 
 
-
-				<ul style="height:calc(100% - 100px) !important; padding-bottom:50px; overflow: hidden">
+				<ul style="display:none; height:calc(100% - 100px) !important; padding-bottom:50px; overflow: hidden">
 					<!-- The user's sessions AKA the model'simportant instances -->
 				</ul>
 

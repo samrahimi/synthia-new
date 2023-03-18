@@ -13,5 +13,5 @@ summarization_settings = {
   "stop": "*******"
 }
 summarization_model = "text-davinci-003"
-TRUNCATE_IF_OVER = 1800
-TRUNCATE_UNTIL_UNDER = 1000
+TRUNCATE_IF_OVER = 2500
+TRUNCATE_UNTIL_UNDER = 1500

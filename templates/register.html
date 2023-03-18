@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+    <title>Create Account</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            background-color:darkslategray;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        form label {
+            font-weight: 600;
+        }
+
+        form button {
+            margin-top: 10px;
+        }
+
+        form button:first-of-type {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 576px) {
+            form {
+                padding: 10px;
+            }
+        }
+    </style>
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <form action="/register" class="signup" method="POST">
+                    <img src="/static/logo-transparent.png" width="100%" />
+                
+                    <h2 class="text-center mb-3">Register Here</h2>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username (Not Your Email)</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password" required>
+                    </div>
+                
+                    <input type="submit" class="btn btn-primary w-100" value="Register" />
+                    <p class="text-center" style="display:none;font-weight:bold; font-size:14px; color:red" class="error">Error: Please check the form and try again.</p>
+                
+                    <div class="mt-4 pt-5 text-center"><h3>Already Have An Account?</h3></div>
+                    <a href="/www/login" class="btn btn-warning w-100">Sign In</a>
+                
+                    <div class="mt-4 pt-5 text-center">
+                        <p>Welcome to Synthia Beta...</p>
+                        <p>Note that voice features on Ubuntu Linux may be limited, use a phone instead. 
+                            Turn up the sound, hit the button to talk, and say hello.</p>
+                        <p>If you have any questions at all, please email support, synthialabs88@gmail.com</p>
+                    </div>
+                </form>
+                            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <!-- Session state and login JS-->
+    <script src="/static/core.js"></script>
+</body>
+
+</html>

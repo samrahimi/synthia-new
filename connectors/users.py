@@ -85,13 +85,14 @@ def login(user_id, password, first_time=False):
         ["Hates Humans", 
         'text-misanthrope-001'], 
         ['Donny 2024','text-political-maga-001'], 
-        ['4 More Years', 'text-political-maga-001'],
+        ['Sexy G', 'sexy_g'],
                 ]:
-        starter_session = Session(model_id=n[0],
+        starter_session = Session(model_id=n[1],
                                 user_id=user_id,
                                 user_name=user["name"],
-                                ai_name=n[1])
-        starter_session.context += "\n\nNOTE: %USER_NAME% just signed up for Synthia, so Please give him the appropriate congratulations when you reply to their first message!\n\n"
+                                ai_name=n[0])
+        if n[1] == 'super_gpt':
+          starter_session.context += "\n\nNOTE: %USER_NAME% just signed up for Synthia, so Please give him the appropriate congratulations when you reply to their first message!\n\n"
         starter_session.save()
 
     user_sessions = load_state(user_id) 

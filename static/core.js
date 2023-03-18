@@ -57,12 +57,12 @@ const refreshCurrentUser = (hand_off_to) => {
     }
 }
 
-$("form").on("submit", (e) => {
+$("form.login").on("submit", (e) => {
     login()
     return false
 })
 
-$(".btn-signup").on("click", (e) => {
+$("form.signup").on("submit", (e) => {
     signup()
     e.preventDefault()
 })
@@ -85,7 +85,7 @@ function login() {
                 $("input").removeAttr("disabled")
             }
             else {
-                localStorage["logged_in_user"] = result.user_id
+                localStorage["logged_in_user"] = JSON.stringify(result)
                 console.log("persisting user in localstorage, login success")
                 location.href = "/www/interactions/" + result.user_id
             }
@@ -96,9 +96,12 @@ function login() {
 }
 function signup() {
     http_post("/users/signup", { "user_id": $("#username").val(), "password": $("#password").val(), "name": $("#username").val(), "email": "None" }, (result) => {
-        if (result["error"])
-            $(".error").html(result["error"])
-        else
+        if (!result || typeof result === 'undefined') {
+            $(".error").show()
+            $("input").removeAttr("disabled")
+            return false
+        }
+    else
         {
             //window.parent.setUid(result.user_id)
             localStorage["logged_in_user"] = JSON.stringify(result)

@@ -49,6 +49,11 @@ def redirect_to_splash():
 def show_login_screen():
   return render_template("login.html")
 
+@app.route('/www/signup')
+def show_signup_screen():
+  return render_template("register.html")
+
+
 
 #this is the main screen
 #we need to enforce the login much better than currently
@@ -102,6 +107,15 @@ def save_model():
 def get_models():
   return jsonify (models.list_models(include_nsfw=True))
 
+@app.route('/all_models', methods=["GET"])
+def getall_models():
+  all=[]
+  for m in models.list_models(include_nsfw = True):
+    model = models.get_model(m)
+    del model["_id"]
+    all.append(model)
+    return jsonify(all)
+
 
 @app.route('/models/<model_id>', methods=["GET"])
 def get_model(model_id):
@@ -111,12 +125,17 @@ def get_model(model_id):
 
 @app.route('/users/signup', methods=["POST"])
 def signup():
+  from flask import session, redirect
+
   data = json.loads(request.get_data(as_text=True))
   u = users.signup(user_id=data["user_id"], name=data["name"], access_level="trial", email=data["email"], password=data["password"])
   if u:
-    return users.serialize_user(u)
+    
+    s= users.serialize_user(u)
+    session["user"]=s
+    return s
   else:
-    return "error"
+   return None
   
 
 @app.route('/users/login', methods=["POST"])
@@ -137,26 +156,20 @@ def do_login():
 @app.route('/sessions/spawn', methods=["POST"])
 def create_session():
   req = json.loads(request.get_data(as_text=True))
-
   #import json
   #req = json.loads(data0)
   print("begin spawning process for owner "+req["user_id"])
   #like many animals and plants, bots can reproduce sexually or asexually
-  session= sessions.Session(model_id=req["model_id"], user_id=req["user_id"], user_name=req["user_name"], ai_name=req["ai_name"], is_existing= False)
+  the_session= sessions.Session(model_id=req["model_id"], user_id=req["user_id"], user_name=req["user_name"], ai_name=req["ai_name"], is_existing= False)
   if "dna" in req:
       daddy_dna = req["dna"]
       daddy= req["father"]
 
-      session.add_male_dna(daddy_dna, parent_uid=req["daddy"], include_default=True, identity_note=None)
+      the_session.add_male_dna(daddy_dna, parent_uid=req["daddy"], include_default=True, identity_note=None)
 
   #the session has autosaved upon creation, so loading the relevant user will also load the new session
   #its ineffecient but right now its more sane than trying to synchronize in-memory dicts with persistant storage
   return users.serialize_user(users.get_user(user_id=req["user_id"], include_sessions=True)) #to see if it works, and to allow the client side to just refresh the list instead of having to append
-
-# unnecessary: session state is autosaved when anything changes, and refreshed when you load a user
-# @app.route("/users/<user_id>/save_state", methods=["GET"])
-# def save_state(user_id):
-#   return users.save_state(user_id) if users.is_logged_in(user_id) else {"error": "this only works for logged in users"}
 
 
 @app.route('/users/refresh/<user_id>', methods=["GET"])
@@ -183,6 +196,7 @@ def perform_inference(session_id, message_to_gpt):
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
+    from flask import session
     # save the uploaded file to disk
     file = request.files['audio']
 

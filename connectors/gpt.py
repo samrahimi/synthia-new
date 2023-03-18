@@ -81,12 +81,12 @@ class ChatGPT:
 
     else:
       self.default_settings = {
-        "temperature": 0.85,
-        "n": 1,
-        "stop": ["*****", "SYSTEM_MESSAGE:"],
-        "max_tokens": 1024
-      }
-    print("Firing up. Model is " + self.model)
+          "temperature": 0.85,
+          "n": 1,
+          "stop": ["*****", "SYSTEM_MESSAGE:"],
+          "max_tokens": 1024
+        }
+      print("Firing up. Model is " + self.model)
 
   def chat(self,
            query="",

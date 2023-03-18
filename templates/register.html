@@ -44,7 +44,7 @@
     <div class="container">
         <div class="row justify-content-center mt-4">
             <div class="col-md-6">
-                <form action="/register" class="signup" method="POST">
+                <form autocomplete="off" action="/register" class="signup" method="POST">
                     <img src="/static/logo-transparent.png" width="100%" />
                 
                     <h2 class="text-center mb-3">Register Here</h2>
@@ -70,7 +70,7 @@
                     </div>
                 
                     <input type="submit" class="btn btn-primary w-100" value="Register" />
-                    <p class="text-center" style="display:none;font-weight:bold; font-size:14px; color:red" class="error">Error: Please check the form and try again.</p>
+                    <p class="text-center error" style="display:none;font-weight:bold; font-size:14px; color:red">Error: Please check the form and try again.</p>
                 
                     <div class="mt-4 pt-5 text-center"><h3>Already Have An Account?</h3></div>
                     <a href="/www/login" class="btn btn-warning w-100">Sign In</a>
@@ -82,6 +82,7 @@
                         <p>If you have any questions at all, please email support, synthialabs88@gmail.com</p>
                     </div>
                 </form>
+                
                             </div>
         </div>
     </div>

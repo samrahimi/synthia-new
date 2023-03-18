@@ -20,6 +20,43 @@ const http_post = (endpoint, payload, response_handler) => {
         .then(data => response_handler(data)) // run the callback 
 
 }
+const validateForm = (e) => {
+    e.preventDefault();
+            
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const passwordConfirmation = document.getElementById("password_confirmation").value.trim();
+    const errorParagraph = document.querySelector(".error")
+    if (!name || !email || !username || !password || !passwordConfirmation) {
+        errorParagraph.innerText = "All fields are required.";
+        errorParagraph.style.display = "block";
+        return false;
+    }
+
+    if (/\s/.test(username)) {
+        errorParagraph.innerText = "Username cannot contain spaces.";
+        errorParagraph.style.display = "block";
+        return false;
+    }
+
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        errorParagraph.innerText = "Please enter a valid email address.";
+        errorParagraph.style.display = "block";
+        return false;
+    }
+
+    if (password !== passwordConfirmation) {
+        errorParagraph.innerText = "Passwords do not match.";
+        errorParagraph.style.display = "block";
+        return false;
+    }
+
+    errorParagraph.style.display = "none";
+    return true
+
+}
 
 const http_get = (endpoint, response_handler) => {
 
@@ -63,7 +100,8 @@ $("form.login").on("submit", (e) => {
 })
 
 $("form.signup").on("submit", (e) => {
-    signup()
+    if (validateForm(e))
+        signup()
     e.preventDefault()
 })
 

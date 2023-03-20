@@ -7,3 +7,5 @@ static/img_dalle/*
 static/img_dalle
 img_dalle
 img_dalle/*
+node_modules
+node_modules/*

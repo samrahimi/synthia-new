@@ -1,0 +1,140 @@
+<!DOCTYPE html> 
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #343a40;
+      color: #ffffff;
+    }
+
+    #column1 {
+      width: 300px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      padding: 1rem;
+      color: white;
+        font-family: Courier, monospace;
+        font-size: 13px;
+
+    } 
+
+
+
+    #messages {
+      height: calc(100% - 60px);
+      overflow-y: auto;
+    }
+
+    #column2 {
+      margin-left: 300px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #textarea-container {
+      height: 300px;
+      padding: 1rem;
+    }
+
+    #textarea {
+      height: 100%;
+      resize: none;
+    }
+
+    #iframe-container {
+      flex-grow: 1;
+    }
+
+    #iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  
+  <style>
+    .sidebar-container {
+      width: 300px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      padding: 1rem;
+      color: white;
+      font-family: "Courier, monospace";
+      font-size: 12px;
+      display: none;
+    }
+  
+    .open-sidebar-button {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+  
+    .close-sidebar-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+  <body><button id="openSidebarButton" class="btn btn-sm btn-primary open-sidebar-button" style=""><svg class="svg-inline--fa fa-bars" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"></path></svg><!-- <i class="fas fa-bars"></i> Font Awesome fontawesome.com --></button>
+    <div id="column1" class="bg-dark sidebar-container" style="display: none;"><button id="closeButton" class="btn btn-sm btn-danger close-sidebar-button">×</button>
+    <div id="messages" class="mb-3">
+      <!-- Messages will be displayed here -->
+      <p class="sent-message">it's not able to find the input box key press handler so it didn't attach any event. I don't care how it's done I just need it so that clicking that button calls whatever it does to send the message and you know it sends it over the wire and it injects it into the column. That should be in your context man.</p><p>// Find the input box and button, and attach a click event to the button that triggers the keypress event on the input box
+  
+  const inputBox = $("input[type='text']").first();
+  const button = $("button").first();
+  
+  button.on("click", () =&gt; {
+    const event = new Event("keypress");
+    event.keyCode = 13; // Enter key code
+    inputBox.get(0).dispatchEvent(event);
+  });</p></div>
+    <div class="input-group">
+        <input type="text" id="inputBox" class="form-control" placeholder="Type your message" aria-label="Type your message">
+        <button class="btn btn-secondary" id="sendQuery" type="button">Send</button>
+    </div>
+  </div>
+
+    <div id="column2" style="margin-left: 0px;">
+      <div id="textarea-container" class="bg-dark" style="height: 62px;">
+      <div class="input-group">
+          <input type="text" id="docurl" class="form-control" value="http://localhost:8080/static/syn/starter-templates/default.html" placeholder="Paste Any Link Here" aria-label="Type your message">
+          <button class="btn btn-secondary" id="loadUrl" type="button">Go</button>
+      </div>
+  
+    </div>
+    <div id="iframe-container">
+      <iframe id="iframe" src="http://localhost:8080/www/login"></iframe>
+    </div>
+    <button id="toggleMicButton" style="position: fixed; right: 20px; bottom: 20px; z-index: 1000;"
+    class="btn btn-primary">
+    <i id="micIcon" class="fas fa-microphone"></i>
+  </button>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script src="realtime.js"></script>
+
+</body>
+
+</html>

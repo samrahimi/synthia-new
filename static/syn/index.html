@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        #column1 {
+            width: 300px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        #messages {
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+
+        #column2 {
+            margin-left: 300px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #textarea-container {
+            height: 300px;
+            padding: 1rem;
+        }
+
+        #textarea {
+            height: 100%;
+            resize: none;
+        }
+
+        #iframe-container {
+            flex-grow: 1;
+        }
+
+        #iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="column1" class="bg-dark">
+        <div id="messages" class="mb-3">
+            <!-- Messages will be displayed here -->
+        </div>
+        <div class="input-group">
+            <input type="text" id="inputBox" class="form-control" placeholder="Type your message" aria-label="Type your message">
+            <button class="btn btn-secondary" type="button">Send</button>
+        </div>
+    </div>
+
+    <div id="column2">
+        <div id="textarea-container" class="bg-dark">
+            <p class="mb-2">Please paste a contextual document here:</p>
+            <textarea id="textarea" class="form-control"></textarea>
+        </div>
+        <div id="iframe-container">
+            <iframe id="iframe" src="about:blank"></iframe>
+        </div>
+    </div>
+    <script>
+        window.addJSresource= (url) => { 
+        const s = document.createElement("script"); 
+        s.src=url; 
+        document.head.appendChild(s); 
+        console.log('add script complete')
+    }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="realtime.js"></script>
+</body>
+
+</html>

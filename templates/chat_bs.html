@@ -72,6 +72,51 @@
 			padding: 10px;
 			border: solid 1px black
 		}
+	  .chat-item .title,
+	  .chat-item .subtext,
+	  .chat-item .numbr {
+		font-size: 14px;
+	  }
+	
+	  .chat-item .title,
+	  .chat-item .subtext {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	  }
+	
+	  .button.is-primary {
+		background-color: #cc5500;
+	  }
+	
+	  .close-btn {
+		position: fixed;
+		top: 13px;
+		right: 10px;
+		font-size: 18px;
+		font-weight: bold;
+		cursor: pointer;
+		z-index: 1000;
+		background: none;
+		border: none;
+		font-family: FontAwesome;
+	  }
+	
+	  .close-btn i.fas.fa-comments {
+		display: inline-block;
+	  }
+	
+	  @media only screen and (max-width: 768px) {
+		.message {
+		  float: none;
+		  width: 100%;
+		  padding-right: 20px;
+		}
+		.close-btn {
+			display:none;
+		}
+
+	  }
 	</style>
 	<div style="display:none; z-index:9999" id="popup" class="absolute-center">
 		<div class="container-popup">
@@ -79,7 +124,7 @@
 				<!-- This field is the only one that's required
 				  from what I know, you always need a MOM no matter what -->
 
-				<h2>New Session</h2>
+				<h2>Spawn From Model</h2>
 				<p>
 					All fields are required
 				</p>
@@ -100,7 +145,7 @@
 				<label for="user_name">Your Name</label>
 				<input type="text" disabled="disabled" id="user_name" name="user_name" value="{{user.user_id}}">
 
-				<a class="button is-link" id="do_spawn">Spawn Bot</a><a id="do_cancel" class="button is-light">Cancel</a>
+				<a class="button is-link" id="do_spawn">Begin Interaction</a><a id="do_cancel" class="button is-light">Cancel</a>
 			</div>
 		</div>
 
@@ -213,9 +258,6 @@
 						overflow:auto;
 					}
 
-					#action_items {
-
-					}
 				
 				</style>
 				
@@ -238,7 +280,7 @@
 
 			</div>
 			<div class="chat-window">
-
+				<button id="close-btn" class="close-btn" style="position: fixed; top: 13px; right: 10px; font-size: 18px; font-weight: bold; cursor: pointer; z-index: 1000; display: block; background: none; border: none; font-family: FontAwesome;"><i class="fas fa-comments"></i></button>
 
 				<div id="chat-messages" style="height:calc(100% - 100px); overflow:auto">
 
@@ -264,16 +306,13 @@
 
 
 		$(document).ready(function () {
-
-			// Check for click events on the navbar burger icon
-			$(".menu-toggle").click(function () {
-
-				// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-				//$(".navbar-burger").toggleClass("is-active");
-				$(".navbar-menu").toggleClass("is-active");
-
+				// Event handler for the close button:
+				$("#close-btn").on("click", function() {
+				$(".chat-window").hide();
+				$(".chat-list").show();
+				});
 			});
-		});
+		
 	</script>
 
 </body>

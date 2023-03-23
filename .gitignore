@@ -9,3 +9,4 @@ img_dalle
 img_dalle/*
 node_modules
 node_modules/*
+pipelines/pdf.py

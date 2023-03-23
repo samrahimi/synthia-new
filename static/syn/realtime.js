@@ -1,6 +1,6 @@
 //one day i'll make gpt4 cause a million telephones to ring at once
 //via this pipe. guess how and name the movie
-const socket = new WebSocket('ws://localhost:8888');
+const socket = new WebSocket('wss://synthia.hopto.org:8888');
 
 
 document.getElementById('docurl').addEventListener('input', function () {
@@ -42,7 +42,7 @@ function executeScriptInIframe(scriptString) {
 }
 
 function evalInIframe(expression) {
-    
+
 }
 
 
@@ -107,11 +107,13 @@ askGptRealtime = (inputBox) => {
 
             //display the sent message
             // Display response content in the messages container
-            const messagesContainer = document.getElementById('messages');
-            const messageElement = document.createElement('p');
-            messageElement.className = "sent-message"
-            messageElement.textContent = queryData.query;
-            messagesContainer.appendChild(messageElement);
+            // const messagesContainer = document.getElementById('messages');
+            // const messageElement = document.createElement('p');
+            // messageElement.className = "sent-message"
+            // messageElement.textContent = queryData.query;
+            // messagesContainer.appendChild(messageElement);
+
+            console.log(queryData.query)
 
         }
     }

@@ -161,7 +161,6 @@ const sampleDoc = `
             </div>
           </div>
         </div>
-
         <div class="col">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
@@ -199,7 +198,7 @@ const sampleDoc = `
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
             <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
@@ -211,7 +210,8 @@ const sampleDoc = `
           </div>
         </div>
 
-        <div class="col">
+        
+<div class="col">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
@@ -303,8 +303,7 @@ const templates= {
     {role: "assistant", content: '//apply css to set the background color of the page body\n$("body").css("background-color", "#ff0000")'}]
 , preprocess: null, postprocess: null, model: "gpt-4", temperature: 0.6, max_tokens: 512},
 
-"contextual_qa": {invocation: `Please answer questions and discuss based on the following context:
-{{context}}`, examples: [], preprocess: null, postprocess: null, model: "gpt-4", temperature: 0.8, max_tokens: 2048}
+"contextual_qa": {invocation: `You are a helpful and extremely smart virtual assistant.\n{{context}}`, examples: [], preprocess: null, postprocess: null, model: "gpt-4", temperature: 0.8, max_tokens: 2048}
 }
 const sessions = []
 
@@ -361,9 +360,24 @@ const gpt = async(session, query, sender, overrides)=>{
 
 }
 
-setup("API key you need to get from platform.openai.com")
+setup("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")
+const fs = require('fs');
+const https = require('https');
 const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 8888 });
+
+// Read the certificate and private key files
+const privateKey = fs.readFileSync('/root/ssl/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/root/ssl/fullchain.pem', 'utf8');
+const ca = fs.readFileSync('/root/ssl/fullchain.pem', 'utf8');
+
+// Bundle the credentials
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+// Create an HTTPS service with the credentials
+const ssl = https.createServer(credentials);
+
+// Start the websocket server using the https service
+const server = new WebSocket.Server({ server: ssl });
 
 server.on('connection', (socket) => {
     console.log('Client connected');
@@ -378,16 +392,16 @@ server.on('connection', (socket) => {
             const sesh = initSession("webby", contextDocument, userId); // Assuming you have an initSession function
 
             socket.send(JSON.stringify({ type: 'sessionCreated', sessionId: sesh.sessionId }));
-        } else if (data.type ==='updatecontext') {
+        } 
+      
+        else if (data.type ==='updatecontext') {
             const s = getSession(data.sessionId)
             s.currentContext = data.contextDocument
-            const template= templates[s.templateId]
 
+            var template = data.templateId ? templates[data.templateId]: templates[s.templateId]
             s.convo[0].content = constructSystemMessage(template.invocation, s.currentContext)
-            console.log("Got context update")
-
-
-            //s.convo.push({role: "system", content: "Updated context to match user's DOM"})
+            if (data.contextChangedMessage)
+              s.convo.push({role: "system", content: "Updated context to match user's DOM"})
             socket.send(JSON.stringify({ type: 'logger', content:"The context document has been updated and will be reflected in future queries to the model" }));
             
             debugSession(s) //dump to console, for our sanity
@@ -407,4 +421,9 @@ server.on('connection', (socket) => {
     socket.on('close', () => {
         console.log('Client disconnected');
     });
+});
+
+// Start the HTTPS server on port 8888
+httpsServer.listen(8888, () => {
+  console.log('WebSocket server running on wss://0.0.0.0:8888');
 });

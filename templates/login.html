@@ -1,82 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
     <title>Login / Signup Screen</title>
+
+  <style>
+    @media (min-width: 992px) {
+      form {
+        width: 80%;
+        max-width: none;
+        padding: 10px;
+      }
+    }
+
+    body {
+    background-color: #1c1c1c;
+    font-family: Arial, sans-serif;
+  }
+
+  .new-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .new-layout img {
+    width: 50%;
+    max-width: 300px;
+    margin-bottom: 2rem;
+  }
+
+  .new-layout h2,
+  .new-layout h3,
+  .new-layout p {
+    color: #f0f0f0;
+    margin-bottom: 2rem;
+  }
+
+  .new-layout form {
+    width: 100%;
+    max-width: 600px;
+    background-color: #2d2d2d;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .new-layout .form-label {
+    color: #f0f0f0;
+    font-weight: 600;
+  }
+
+  .new-layout .btn-primary {
+    background-color: #cc5500;
+    border-color: #cc5500;
+    margin-bottom: 1rem;
+  }
+
+  .new-layout .text-center {
+    color: #f0f0f0;
+    text-align: center;
+    margin-top: 2rem;
+  }
+</style>
+
 </head>
 
-<body>
-    <style>
-        body {
-            background-color: #f5f5f5;
-            background-color:darkslategray;
-        }
+<body style="background-color: rgb(28, 28, 28);">
+  <div style="background-color: rgb(212, 124, 0); padding: 1rem; text-align: center; font-weight: bold; color: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;">
+    We are experiencing extremely heavy load due to issues with Chat GPT causing people to sign up for Synthia all at once (you rock)
+    The Synthia issues relate to an improperly configured database server and we expect operations to be back to normal within 24 hours
+  </div>
 
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-        }
+    
+    
 
-        form label {
-            font-weight: 600;
-        }
-
-        form button {
-            margin-top: 10px;
-        }
-
-        form button:first-of-type {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 576px) {
-            form {
-                padding: 10px;
-            }
-        }
-    </style>
-    <div class="container">
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
-                {%if login_failed: %}
-                <p><b>
-                    If you forgot your password, make a new account. Note that old accounts may have been deleted because it was an early beta. <br />
-                    Bots: login procedures have changed - the server will redirect you upon logging in. <br />
-                </b></p>
-                {% endif %}
-                <form autocomplete="off" action="/create_session" class="login" method="POST">
-                    <img src="/static/logo-transparent.png" width="100%" />
-
-                    <h2 class="text-center mb-3">Sign In Here</h2>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username (Not Your Email)</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter your username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
-                    </div>
+    <!-- Bootstrap JS -->
+    
+    
+    <!-- Session state and login JS-->
+    
 
 
-                    <input type="submit" class="btn btn-primary w-100" value="Log In" />
-                    <p class="text-center error" style="display:none;font-weight:bold; font-size:14px; color:red">Incorrect Username or Password. Try again.</p>
 
-                    <div class="mt-4 pt-5 text-center"><h3>Need An Account?</h3></div>
-                    <a href="/www/signup" class="btn btn-warning w-100">Register</a>
+  <div class="new-layout" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 4rem); background-color: rgb(28, 28, 28);">
+    <img src="/static/logo-transparent.png" width="50%" style="max-width:300px; margin-bottom: 2rem;">
+    <h2 style="color:#f0f0f0; margin-bottom: 2rem;">Sign In Here</h2>
+    <form autocomplete="off" action="/create_session" class="login" method="POST" style="width: 100%; max-width: 600px; background-color: #2d2d2d; padding: 20px; border-radius: 5px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);">
+      <div class="mb-3">
+        <label for="username" class="form-label" style="color:#f0f0f0; font-weight: 600;">Username (Not Your Email)</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter your username">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label" style="color:#f0f0f0; font-weight: 600;">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password">
+      </div>
+      <input type="submit" class="btn btn-primary w-100" value="Log In" style="background-color: #cc5500; border-color: #cc5500; margin-bottom: 1rem;">
+      <p class="text-center error" style="display:none;font-weight:bold; font-size:14px; color:red">Incorrect Username or Password. Try again.</p>
+      <h3 style="color:#f0f0f0; text-align:center; margin-top: 2rem;">Need An Account?</h3>
+      <a href="/www/signup" class="btn btn-warning w-100" style="margin-bottom: 2rem;">Register</a>
+      </form></div><script type="text/javascript">// I'm glad you like the new layout. Here's a CSS stylesheet that you can use for the signup form as well.
 
-                    <div class="mt4 pt-5 text center"><p>Welcome to Synthia Beta...</p><P> Note that voice features on Ubuntu Linux may be limited, use a phone instead. 
-                        Turn up the sound, hit the button to talk, and say hello.<p> If you have any questions at all, please email support,  synthialabs88@gmail.com</p></div>
-                </form>
-            </div>
-        </div>
-    </div>
+/* Add this stylesheet to your project */
+/*
+<style>
+*/
 
+// When you're ready to move to the sign-up form, let me know and I can help you apply the same styling to that page.</script><script type="text/javascript">// Add a warning banner at the top of the page
+
+// Adjust the new-layout container to account for the banner
+$(".new-layout").css("min-height", "calc(100vh - 4rem)");</script><script type="text/javascript">// Darken the background color of the warning banner
+$("div:first").css("background-color", "#d47c00");</script></body></html>
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.js"></script>

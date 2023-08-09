@@ -1,97 +1,187 @@
-<mxfile host="app.diagrams.net" modified="2023-08-09T19:49:14.788Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" version="21.6.7" etag="5QVYycE1wDbxUeukvHny" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-09T21:08:19.314Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="Y3CFkq9SVXUnTwpKCX4Z" version="21.6.7" type="github">
   <diagram name="Page-1" id="OHdsYCbCnG-SN8lq6T2x">
-    <mxGraphModel>
+    <mxGraphModel dx="2025" dy="2235" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="User" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry y="65" width="47" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="3" value="Consumer App" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="97" y="65" width="117" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="4" value="Web" style="rhombus;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
-          <mxGeometry x="271" width="79" height="79" as="geometry" />
-        </mxCell>
-        <mxCell id="5" value="Server" style="rhombus;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
-          <mxGeometry x="263" y="129" width="94" height="94" as="geometry" />
-        </mxCell>
-        <mxCell id="6" value="HTML/CSS/JavaScript" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="407" y="23" width="170" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="7" value="Database" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="452" y="133" width="80" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="8" value="API" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="473" y="216" width="38" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="9" value="Authorization" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="661" y="91" width="112" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="10" value="Data Management" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="646" y="175" width="144" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="11" value="Third-party Integration" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="627" y="258" width="180" height="34" as="geometry" />
-        </mxCell>
-        <mxCell id="12" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.9956781914893617;exitY=0.478515625;entryX=-0.001736111111111111;entryY=0.478515625;" edge="1" parent="1" source="2" target="3">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-70" value="&lt;meta charset=&quot;utf-8&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;Should I buy a hamsterí ½í°¹ or a gerbil&amp;nbsp;í ½í°¹&lt;/span&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="3">
+          <mxGeometry x="0.0294" y="-121" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="13" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.7818753518603819;exitY=-0.014131433823529412;entryX=-0.0027195411392405065;entryY=0.5002472310126582;" edge="1" parent="1" source="3" target="4">
+        <mxCell id="2" value="User" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="215" y="320" width="47" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="3" target="ooe3D_YCk3u6CpwoQ3jg-24">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="238" y="40" />
+              <mxPoint x="239" y="-20" />
+              <mxPoint x="115" y="-20" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="14" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.622175294361815;exitY=0.9711626838235294;entryX=0.0036569148936170214;entryY=0.5;" edge="1" parent="1" source="3" target="5">
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-31" value="raw request: should I buy a hamster or a gerbil?" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-30">
+          <mxGeometry x="0.0308" y="-1" relative="1" as="geometry">
+            <mxPoint x="131" y="77" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-74" value="raw response: passthru from multimodal-formatter" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-30">
+          <mxGeometry x="-0.2272" y="1" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-75" value="Here&#39;s the answer...&lt;br&gt;&lt;br&gt;(render the text and image content in the final response)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-73">
+          <mxGeometry x="-0.2941" y="-2" relative="1" as="geometry">
+            <mxPoint x="-88" y="13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3" value="Consumer App" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="180" y="150" width="117" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.588;exitY=1.038;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-21" target="ooe3D_YCk3u6CpwoQ3jg-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="-210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-38" value="&lt;div style=&quot;text-align: left;&quot;&gt;[{&quot;response_type&quot;: &quot;execution_plan&quot;,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;steps:[&lt;br&gt;[&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;{action: llm_query&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;model: general-chat,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;input: &quot;should i buy a hamster or a gerbil?&quot;},&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;{action: generate_image,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;input: &quot;a gerbil&quot;},&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;{action: generate_image,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;input: &quot;a hamster&quot;}&lt;br&gt;],&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;[&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;{action: llm_query,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;model: multimodal-formatter,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;input_from_previous: true,&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;is_final: true} &lt;br&gt;]]}&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-25">
+          <mxGeometry x="-0.1617" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-21" value="task-extraction (small, finetuned LLM)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="-500" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.067;entryY=0.506;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-22" target="ooe3D_YCk3u6CpwoQ3jg-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-42" value="save image&lt;br&gt;get url" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-41">
+          <mxGeometry x="-0.1228" y="5" relative="1" as="geometry">
+            <mxPoint x="1" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-47" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-22" target="ooe3D_YCk3u6CpwoQ3jg-24">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="238" y="176" />
+              <mxPoint x="330" y="-442" />
+              <mxPoint x="330" y="-95" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="15" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.997774920886076;exitY=0.5002472310126582;entryX=0.0015625;entryY=0.48586856617647056;" edge="1" parent="1" source="4" target="6">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-48" value="https://hamster.jpg" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-47">
+          <mxGeometry x="-0.3079" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="16" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1.0028257978723405;exitY=0.3160931554684558;entryX=-0.00048828125;entryY=0.4855813419117647;" edge="1" parent="1" source="5" target="7">
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-22" value="image-generation (stable diffusion et al)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="-510" width="126" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-32" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-24" target="ooe3D_YCk3u6CpwoQ3jg-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-36" value="prompt template: general_qa&lt;br&gt;request: should I buy a hamster or a gerbil&lt;br&gt;initial_responsibility: usually task-extraction" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-32">
+          <mxGeometry x="-0.3857" y="-1" relative="1" as="geometry">
+            <mxPoint x="-11" y="-296" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-24" target="ooe3D_YCk3u6CpwoQ3jg-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-44" value="[&quot;a hamster&quot;, &quot;a gerbil&quot;]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-43">
+          <mxGeometry x="0.1693" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-55" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;curved=1;entryX=0.625;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-24" target="ooe3D_YCk3u6CpwoQ3jg-51">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="382" y="150" />
+              <mxPoint x="30" y="-80" />
+              <mxPoint x="-330" y="-80" />
+              <mxPoint x="-330" y="-220" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="17" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1.0028257978723405;exitY=0.8957868380912217;entryX=0.007915296052631578;entryY=0.5002872242647058;" edge="1" parent="1" source="5" target="8">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="382" y="233" />
-            </Array>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-56" value="&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;{action: llm_query&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;model: general-chat,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;span style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;input: &quot;should i buy a hamster or a gerbil?&quot;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-55">
+          <mxGeometry x="-0.1028" y="1" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="18" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.8923624789893896;exitY=0.00764016544117647;entryX=0.0034877232142857145;entryY=0.4929342830882353;" edge="1" parent="1" source="8" target="9">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="602" y="108" />
-            </Array>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.625;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-24" target="ooe3D_YCk3u6CpwoQ3jg-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-24" value="/api" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="-110" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-33" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-29" target="ooe3D_YCk3u6CpwoQ3jg-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-34" value="please create a structured execution plan for this prompt based&lt;br&gt;on the context. include image prompt if a picture would be helpful to the user. context:&lt;br&gt;&lt;br&gt;should i buy a hamster or a gerbil?&lt;br&gt;&lt;br&gt;available models:&lt;br&gt;&lt;br&gt;general-chat&lt;br&gt;general-completions&lt;br&gt;image-generation&lt;br&gt;fiction-writer&lt;br&gt;code-generation&lt;br&gt;multimodal-formatter" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-33">
+          <mxGeometry x="0.2875" y="-27" relative="1" as="geometry">
+            <mxPoint x="22" y="-199" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="19" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1.0029810855263157;exitY=0.28912235327100727;entryX=-0.003119574652777778;entryY=0.4782284007352941;" edge="1" parent="1" source="8" target="10">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="602" y="191" />
-            </Array>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-29" value="/gatekeeper" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="-640" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-37" target="ooe3D_YCk3u6CpwoQ3jg-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-37" value="prompt template store" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="-290" y="-637.5" width="70" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-39" value="About the execution plan. All workloads can be broken down into one or more tasks in sequence (a pipeline).&amp;nbsp;&lt;br&gt;&lt;br&gt;Certain tasks may have subtasks - the subtasks of a task can be done in parallel, and depend only on the input for the parent task.&amp;nbsp;&lt;br&gt;&lt;br&gt;Note that tasks and subtasks can themselves be pipelines... there is infinite levels of nesting" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="890" y="230" width="390" height="221" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-40" value="image cdn storage" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="541" y="-510" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-58" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-50" target="ooe3D_YCk3u6CpwoQ3jg-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-59" value="{answer: It depends on your personality. Hamsters are XXX and gerbils are YYY.&lt;br&gt;You should really get a life and stop asking stupid questions}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-58">
+          <mxGeometry x="-0.6419" y="-1" relative="1" as="geometry">
+            <mxPoint x="77" y="69" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="20" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1.0029810855263157;exitY=0.7114520952584045;entryX=0.0008246527777777778;entryY=0.4929342830882353;" edge="1" parent="1" source="8" target="11">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="602" y="275" />
-            </Array>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-50" value="general-chat (LLM)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-610" y="-420" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-51" target="ooe3D_YCk3u6CpwoQ3jg-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-57" value="You are a helpful assistant. Please answer the following question truthfully and politely:&lt;br&gt;&lt;br&gt;should I buy a hamster or a gerbil?" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-53">
+          <mxGeometry x="0.5" relative="1" as="geometry">
+            <mxPoint x="35" y="28" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.375;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-51" target="ooe3D_YCk3u6CpwoQ3jg-63">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-68" value="Please create a nicely formatted response based on the text and related images referenced below:&lt;br&gt;&lt;br&gt;[&quot;it depends on...&quot;, &quot;https://hamster&quot;, &quot;https://gerbil&quot;]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-65">
+          <mxGeometry x="0.4261" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-51" value="LLM preprocessor" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="-500" y="-220" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.341;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ooe3D_YCk3u6CpwoQ3jg-63" target="ooe3D_YCk3u6CpwoQ3jg-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-67" value="&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;{action: llm_query&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;model: general-chat,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;span style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color);&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;input: [&quot;it depends on...&quot;, &quot;https://hamster&quot;, &quot;https://gerbil&quot;]}&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-66">
+          <mxGeometry x="-0.0245" y="-1" relative="1" as="geometry">
+            <mxPoint x="-18" y="-171" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-69" value="{answer: &quot;It depends on ...&amp;nbsp;&lt;br&gt;&lt;br&gt;Hamsters are X&lt;br&gt;[Image: https://hamster]&lt;br&gt;&lt;br&gt;Gerbils are Y&lt;br&gt;[Image: https://gerbil]&lt;br&gt;&lt;br&gt;You should really get a life and stop asking stupid questions}&lt;br&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ooe3D_YCk3u6CpwoQ3jg-66">
+          <mxGeometry x="-0.4219" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ooe3D_YCk3u6CpwoQ3jg-63" value="multimodal-formatter" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-610" y="110" width="120" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
